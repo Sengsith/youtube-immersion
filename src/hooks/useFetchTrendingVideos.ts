@@ -9,6 +9,26 @@ const useFetchTrendingVideos = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const formatDuration = (duration: string): string => {
+      const regex =
+        /P(?:([\d.]+)Y)?(?:([\d.]+)M)?(?:([\d.]+)W)?(?:([\d.]+)D)?T(?:([\d.]+)H)?(?:([\d.]+)M)?(?:([\d.]+)S)?/;
+      const matches = duration.match(regex);
+
+      if (!matches) {
+        throw new Error("Invalid ISO 8601 duration format");
+      }
+
+      const hours = parseFloat(matches[5]) || 0;
+      const minutes = parseFloat(matches[6]) || 0;
+      const seconds = parseFloat(matches[7]) || 0;
+
+      const formattedHours = hours > 0 ? String(hours).padStart(2, "0") + ":" : "";
+      const formattedMinutes = String(minutes).padStart(2, "0");
+      const formattedSeconds = String(seconds).padStart(2, "0");
+
+      return `${formattedHours}${formattedMinutes}:${formattedSeconds}`;
+    };
+
     const fetchTrendingVideos = async () => {
       try {
         const part = "part=snippet%2C%20contentDetails%2C%20statistics&";
@@ -28,7 +48,7 @@ const useFetchTrendingVideos = () => {
           title: item.snippet.title,
           thumbnail: item.snippet.thumbnails.default, // or any other size you prefer
           channelTitle: item.snippet.channelTitle,
-          duration: item.contentDetails.duration,
+          duration: formatDuration(item.contentDetails.duration),
           viewCount: item.statistics.viewCount,
         }));
         setTrendingVideos(videos);
