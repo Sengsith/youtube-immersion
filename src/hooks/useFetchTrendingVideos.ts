@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Video } from "../types/video";
+import { formatDistanceToNow } from "date-fns";
 
 const BASE_VIDEOS_URL = "https://youtube.googleapis.com/youtube/v3/videos?";
 
@@ -29,6 +30,11 @@ const useFetchTrendingVideos = () => {
       return `${formattedHours}${formattedMinutes}:${formattedSeconds}`;
     };
 
+    const formatPublishedDate = (date: string): string => {
+      const result = formatDistanceToNow(new Date(date), { addSuffix: true });
+      return result.replace(/^about /, "");
+    };
+
     const fetchTrendingVideos = async () => {
       try {
         const part = "part=snippet%2C%20contentDetails%2C%20statistics&";
@@ -44,7 +50,7 @@ const useFetchTrendingVideos = () => {
 
         const videos = data.items.map((item: any) => ({
           id: item.id,
-          publishedAt: new Date(item.snippet.publishedAt),
+          publishedAt: formatPublishedDate(item.snippet.publishedAt),
           title: item.snippet.title,
           thumbnail: item.snippet.thumbnails.default, // or any other size you prefer
           channelTitle: item.snippet.channelTitle,

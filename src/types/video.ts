@@ -1,6 +1,6 @@
 export interface Video {
   id: string;
-  publishedAt: Date;
+  publishedAt: string;
   title: string;
   thumbnail: {
     url: string;
