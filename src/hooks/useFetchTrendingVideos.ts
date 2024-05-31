@@ -35,6 +35,18 @@ const useFetchTrendingVideos = () => {
       return result.replace(/^about /, "");
     };
 
+    const formatViews = (views: string): string => {
+      const viewsValue = parseInt(views, 10);
+      if (viewsValue >= 1_000_000_000) {
+        return `${(viewsValue / 1_000_000_000).toFixed(1)}B views`;
+      } else if (viewsValue >= 1_000_000) {
+        return `${(viewsValue / 1_000_000).toFixed(1)}M views`;
+      } else if (viewsValue >= 1_000) {
+        return `${(viewsValue / 1_000).toFixed(1)}K views`;
+      }
+      return `${views} views`;
+    };
+
     const fetchTrendingVideos = async () => {
       try {
         const part = "part=snippet%2C%20contentDetails%2C%20statistics&";
@@ -52,10 +64,10 @@ const useFetchTrendingVideos = () => {
           id: item.id,
           publishedAt: formatPublishedDate(item.snippet.publishedAt),
           title: item.snippet.title,
-          thumbnail: item.snippet.thumbnails.default, // or any other size you prefer
+          thumbnail: item.snippet.thumbnails.default,
           channelTitle: item.snippet.channelTitle,
           duration: formatDuration(item.contentDetails.duration),
-          viewCount: item.statistics.viewCount,
+          viewCount: formatViews(item.statistics.viewCount),
         }));
         setTrendingVideos(videos);
         setLoading(false);

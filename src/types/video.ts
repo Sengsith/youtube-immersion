@@ -9,5 +9,5 @@ export interface Video {
   };
   channelTitle: string;
   duration: string;
-  viewCount: number;
+  viewCount: string;
 }
