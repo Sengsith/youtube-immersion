@@ -13,6 +13,12 @@ const router = createBrowserRouter([
   {
     path: "/watch",
     element: <WatchPage />,
+    children: [
+      {
+        path: "/watch/:videoId",
+        element: <WatchPage />,
+      },
+    ],
   },
 ]);
 

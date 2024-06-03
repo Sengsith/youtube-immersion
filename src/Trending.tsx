@@ -1,4 +1,5 @@
 import useFetchTrendingVideos from "./hooks/useFetchTrendingVideos";
+import { Link } from "react-router-dom";
 
 const Trending = () => {
   const { trendingVideos, loading, error } = useFetchTrendingVideos();
@@ -11,7 +12,9 @@ const Trending = () => {
       <div className="trending-video-list">
         {trendingVideos.map((video) => (
           <div key={video.id} className="trending-video-thumbnail">
-            <img src={video.thumbnail.url} alt={video.title} />
+            <Link to={`/watch/${video.id}`}>
+              <img src={video.thumbnail.url} alt={video.title} />
+            </Link>
             <h3 className="video-title">{video.title}</h3>
             <p className="video-channel">{video.channelTitle}</p>
             <p className="video-views">{video.viewCount}</p>
