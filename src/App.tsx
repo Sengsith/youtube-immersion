@@ -1,11 +1,25 @@
 import "./App.css";
-import Trending from "./Trending";
+import HomePage from "./pages/HomePage";
+import WatchPage from "./pages/WatchPage";
+import NotFoundPage from "./pages/NotFoundPage";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <HomePage />,
+    errorElement: <NotFoundPage />,
+  },
+  {
+    path: "/watch",
+    element: <WatchPage />,
+  },
+]);
 
 function App() {
   return (
     <>
-      <h1>Hello World!</h1>
-      <Trending />
+      <RouterProvider router={router} />
     </>
   );
 }
