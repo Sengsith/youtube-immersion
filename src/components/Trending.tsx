@@ -12,7 +12,7 @@ const Trending = () => {
       <div className="trending-video-list">
         {trendingVideos.map((video) => (
           <div key={video.id} className="trending-video-thumbnail">
-            <Link to={`/watch/${video.id}`}>
+            <Link to={`/watch/${video.id}`} state={{ video }}>
               <img src={video.thumbnail.url} alt={video.title} />
             </Link>
             <h3 className="video-title">{video.title}</h3>
