@@ -1,4 +1,4 @@
-import useFetchTrendingVideos from "./hooks/useFetchTrendingVideos";
+import useFetchTrendingVideos from "../hooks/useFetchTrendingVideos";
 import { Link } from "react-router-dom";
 
 const Trending = () => {
@@ -6,7 +6,7 @@ const Trending = () => {
 
   return (
     <>
-      <h2>Trending</h2>
+      <h2>Trending Videos</h2>
       {loading && <div>Loading...</div>}
       {error && <div>Error!</div>}
       <div className="trending-video-list">

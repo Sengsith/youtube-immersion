@@ -1,9 +1,8 @@
-import Trending from "../Trending";
+import Trending from "../components/Trending";
 
 const HomePage = () => {
   return (
     <>
-      <h1>HomePage</h1>
       <Trending />
     </>
   );

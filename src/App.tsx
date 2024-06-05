@@ -1,26 +1,6 @@
 import "./App.css";
-import HomePage from "./pages/HomePage";
-import WatchPage from "./pages/WatchPage";
-import NotFoundPage from "./pages/NotFoundPage";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <HomePage />,
-    errorElement: <NotFoundPage />,
-  },
-  {
-    path: "/watch",
-    element: <WatchPage />,
-    children: [
-      {
-        path: "/watch/:videoId",
-        element: <WatchPage />,
-      },
-    ],
-  },
-]);
+import { RouterProvider } from "react-router-dom";
+import router from "./router";
 
 function App() {
   return (
