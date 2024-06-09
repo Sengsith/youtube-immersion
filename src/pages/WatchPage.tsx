@@ -1,4 +1,5 @@
 import { useParams, useLocation } from "react-router-dom";
+import Transcript from "../components/Transcript";
 
 const WatchPage = () => {
   const { videoId } = useParams();
@@ -25,6 +26,9 @@ const WatchPage = () => {
         <p>{viewCount}</p>
         <p>{duration}</p>
         <p>{publishedAt}</p>
+      </div>
+      <div className="video-transcript">
+        <Transcript />
       </div>
     </>
   );
