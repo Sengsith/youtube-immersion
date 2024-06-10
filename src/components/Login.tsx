@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { GoogleOAuthProvider, GoogleLogin, CredentialResponse } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { User } from "../types/user";
 
@@ -9,38 +9,48 @@ interface Props {
 }
 
 const Login = ({ user, setUser }: Props) => {
-  const handleLoginSuccess = async (response: CredentialResponse) => {
-    if (response.credential) {
-      // Send data to backend
-      try {
-        // Send credential to backend
-        const res = await axios.post("http://localhost:3000/login", {
-          token: response.credential,
-        });
-        setUser(res.data);
-        // Handle the response from the backend
-        console.log("Login success", res.data);
-        alert(`Welcome ${res.data.given_name} at ${res.data.email}`);
-      } catch (error) {
-        console.log("Error logging in.", error);
+  const handleLogin = useGoogleLogin({
+    flow: "auth-code",
+    onSuccess: async ({ code }) => {
+      if (code) {
+        console.log(code);
+        // Send data to backend
+        try {
+          console.log("Sending access token to backend:", code);
+          // Send credential to backend
+          const res = await axios.post("http://localhost:3000/login", {
+            code,
+          });
+          setUser(res.data);
+          // Handle the response from the backend
+          console.log("Login success", res.data);
+          alert(`Welcome ${res.data.given_name} at ${res.data.email}`);
+        } catch (error) {
+          console.log("Error logging in.", error);
+          if (axios.isAxiosError(error)) {
+            console.error("Axios error response:", error.response);
+          }
+        }
+      } else {
+        console.log("No credentials returned");
       }
-    } else {
-      console.log("No credentials returned");
-    }
-  };
-
-  const handleLoginFailure = () => console.log("Login Failed");
+    },
+    onError: () => {
+      console.log("Login failed");
+    },
+    scope: "profile email https://www.googleapis.com/auth/youtube.force-ssl",
+  });
 
   return (
-    <GoogleOAuthProvider clientId={import.meta.env.VITE_CLIENT_ID}>
+    <>
       {user ? (
         <div>
           <p>Welcome, {user.given_name}!</p>
         </div>
       ) : (
-        <GoogleLogin onSuccess={handleLoginSuccess} onError={handleLoginFailure}></GoogleLogin>
+        <button onClick={() => handleLogin()}>Login with Google</button>
       )}
-    </GoogleOAuthProvider>
+    </>
   );
 };
 
