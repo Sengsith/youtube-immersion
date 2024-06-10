@@ -1,14 +1,8 @@
-import { Dispatch, SetStateAction } from "react";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import { User } from "../types/user";
+import { UserProps } from "../types/userProps";
 
-interface Props {
-  user: User | null;
-  setUser: Dispatch<SetStateAction<User | null>>;
-}
-
-const Login = ({ user, setUser }: Props) => {
+const Login = ({ user, setUser }: UserProps) => {
   const handleLogin = useGoogleLogin({
     flow: "auth-code",
     onSuccess: async ({ code }) => {
@@ -16,7 +10,7 @@ const Login = ({ user, setUser }: Props) => {
         console.log(code);
         // Send data to backend
         try {
-          console.log("Sending access token to backend:", code);
+          console.log("Sending user code to backend:", code);
           // Send credential to backend
           const res = await axios.post("http://localhost:3000/login", {
             code,

@@ -1,12 +1,6 @@
-import { Dispatch, SetStateAction } from "react";
-import { User } from "../types/user";
+import { UserProps } from "../types/userProps";
 
-interface Props {
-  user: User | null;
-  setUser: Dispatch<SetStateAction<User | null>>;
-}
-
-const Logout = ({ user, setUser }: Props) => {
+const Logout = ({ user, setUser }: UserProps) => {
   const handleLogout = () => {
     setUser(null);
     console.log("Logout clicked");

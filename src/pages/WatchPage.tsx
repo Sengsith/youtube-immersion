@@ -1,5 +1,6 @@
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useOutletContext } from "react-router-dom";
 import Transcript from "../components/Transcript";
+import { UserProps } from "../types/userProps";
 
 const WatchPage = () => {
   const { videoId } = useParams();
@@ -11,6 +12,10 @@ const WatchPage = () => {
   }
 
   const { channelTitle, viewCount, duration, publishedAt } = video;
+
+  const context = useOutletContext<UserProps | null>();
+  const user = context?.user ?? null;
+  const setUser = context?.setUser ?? (() => {});
 
   return (
     <>
@@ -28,7 +33,7 @@ const WatchPage = () => {
         <p>{publishedAt}</p>
       </div>
       <div className="video-transcript">
-        <Transcript />
+        <Transcript user={user} setUser={setUser} />
       </div>
     </>
   );

@@ -1,12 +1,9 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import Login from "../components/Login";
 import Logout from "../components/Logout";
-import { User } from "../types/user";
+import { UserProps } from "../types/userProps";
 
-const Header = () => {
-  const [user, setUser] = useState<User | null>(null);
-
+const Header = ({ user, setUser }: UserProps) => {
   return (
     <div className="header">
       <Link to="/">Home</Link>
