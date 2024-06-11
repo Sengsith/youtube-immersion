@@ -14,7 +14,7 @@ const Layout = () => {
   return (
     <>
       <div className="layout">
-        <Header user={user} setUser={setUser} />
+        <Header user={user} setUser={setUser} inHeader={true} />
         <div className="main-content">
           <Sidebar />
           <div className="content">

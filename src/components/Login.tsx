@@ -2,7 +2,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { UserProps } from "../types/userProps";
 
-const Login = ({ user, setUser }: UserProps) => {
+const Login = ({ user, setUser, inHeader = false }: UserProps) => {
   const handleLogin = useGoogleLogin({
     flow: "auth-code",
     onSuccess: async ({ code }) => {
@@ -38,9 +38,7 @@ const Login = ({ user, setUser }: UserProps) => {
   return (
     <>
       {user ? (
-        <div>
-          <p>Welcome, {user.given_name}!</p>
-        </div>
+        <div>{inHeader && <p>Welcome, {user.given_name}!</p>}</div>
       ) : (
         <button onClick={() => handleLogin()}>Login with Google</button>
       )}
