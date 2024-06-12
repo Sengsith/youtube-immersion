@@ -12,7 +12,7 @@ const Login = ({ user, setUser, inHeader = false }: UserProps) => {
         try {
           console.log("Sending user code to backend:", code);
           // Send credential to backend
-          const res = await axios.post("http://localhost:3000/login", {
+          const res = await axios.post("http://localhost:3000/api/login", {
             code,
           });
           setUser(res.data);
