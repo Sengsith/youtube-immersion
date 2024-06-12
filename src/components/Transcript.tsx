@@ -2,22 +2,31 @@ import useFetchVideoCaptions from "../hooks/useFetchVideoCaptions";
 import { UserProps } from "../types/userProps";
 import Login from "../components/Login";
 
-const Transcript = ({ user, setUser }: UserProps) => {
+interface TranscriptProps extends UserProps {
+  videoId: string | undefined;
+}
+
+const Transcript = ({ user, setUser, videoId }: TranscriptProps) => {
   // Want to check if the user is already logged in or not.
   // If the user is logged in, we need to make a call to get their access token and then send a request to youtube API to download captions
   // IF the user is NOT logged in, they need to login and then do the case above
 
   if (!user) {
-    <div>User is not logged in to use transcript.</div>;
+    return (
+      <div>
+        <p>User is not logged in to use transcript.</p>
+        <Login user={user} setUser={setUser} />
+      </div>
+    );
   }
 
-  console.log("user: ", user);
-  console.log("setUser: ", setUser);
+  const { captions, loading, error } = useFetchVideoCaptions(videoId);
 
   return (
     <div className="transcript-container">
       <h3>Transcript</h3>
-      <Login user={user} setUser={setUser} />
+      {loading && <div>Loading...</div>}
+      {error && <div>Error!</div>}
     </div>
   );
 };

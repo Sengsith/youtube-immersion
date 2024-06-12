@@ -10,7 +10,7 @@ const Layout = () => {
 
   // Only want to pass state into WatchPage
   const shouldPassProps = location.pathname.includes("/watch");
-  console.log("Current location.pathname:", location.pathname);
+
   return (
     <>
       <div className="layout">

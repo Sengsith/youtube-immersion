@@ -33,7 +33,7 @@ const WatchPage = () => {
         <p>{publishedAt}</p>
       </div>
       <div className="video-transcript">
-        <Transcript user={user} setUser={setUser} />
+        <Transcript user={user} setUser={setUser} videoId={videoId} />
       </div>
     </>
   );

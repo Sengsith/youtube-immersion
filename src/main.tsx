@@ -8,3 +8,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <App />
   </React.StrictMode>
 );
+
+// Test without strictmode
+// ReactDOM.createRoot(document.getElementById("root")!).render(<App />);

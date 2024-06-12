@@ -2,7 +2,7 @@ export interface Caption {
   id: string;
   language: string;
   trackKind: "standard" | "auto-generated" | "unknown";
-  lines: [
+  lines?: [
     {
       start: string;
       end: string;
