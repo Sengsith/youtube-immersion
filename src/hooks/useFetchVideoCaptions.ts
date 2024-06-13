@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Caption } from "../types/caption";
+import axios from "axios";
 
 const BASE_LIST_CAPTIONS_URL = "https://youtube.googleapis.com/youtube/v3/captions?";
 
@@ -40,12 +41,20 @@ const useFetchVideoCaptions = (videoId: string | undefined) => {
         const data = await response.json();
         console.log("useFetchVideoCaptions data:", data);
 
-        const captionsArray = data.items.map((item: any) => ({
-          id: item.id,
-          language: item.snippet.language,
-          trackKind: item.snippet.trackKind,
-        }));
+        const captionsArray = data.items.map((item: any) =>
+          // For each item.id(caption id), perform an API call using our access token
+          // 1. Get access_token which comes from auth.ts
+          //// 1a. Save our user's access_token securely when they login
+          // 2. captions.download API call will get access_token using mongoose
+          // 3. Save res data into captions
+          ({
+            id: item.id,
+            language: item.snippet.language,
+            trackKind: item.snippet.trackKind,
+          })
+        );
         setCaptions(captionsArray);
+
         setLoading(false);
       } catch (error) {
         console.error(error);

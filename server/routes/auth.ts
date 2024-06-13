@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { OAuth2Client } from "google-auth-library";
 import dotenv from "dotenv";
+import UserModel from "../../src/models/UserModel";
 
 dotenv.config({ path: "../.env" });
 
@@ -24,11 +25,23 @@ router.post("/login", async (req, res) => {
   }
   console.log("Tokens received:", tokens);
 
+  // access_token (to talk with google APIs)
+  // refresh_token (to refresh user's token)
+  // id_token (JWT contains all user's info)
+
+  // Get user information (name, email, picture, etc)
   try {
     const idToken = tokens.id_token;
+    const accessToken = tokens.access_token;
     if (!idToken) {
       console.error("ID token is missing in the tokens.");
       res.status(400).json({ error: "ID token is missing in the tokens" });
+      return;
+    }
+
+    if (!accessToken) {
+      console.error("Access token is missing in the tokens.");
+      res.status(400).json({ error: "Access token is missing in the tokens." });
       return;
     }
 
@@ -41,6 +54,13 @@ router.post("/login", async (req, res) => {
 
     if (payload) {
       const { given_name, email, picture } = payload;
+
+      await UserModel.findOneAndUpdate(
+        { email },
+        { given_name, email, picture, accessToken },
+        { upsert: true, new: true }
+      );
+
       res.status(200).json({ given_name, email, picture });
     } else {
       console.log("Invalid Payload");
