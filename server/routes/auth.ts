@@ -55,11 +55,12 @@ router.post("/login", async (req, res) => {
     if (payload) {
       const { given_name, email, picture } = payload;
 
-      await UserModel.findOneAndUpdate(
-        { email },
-        { given_name, email, picture, accessToken },
-        { upsert: true, new: true }
-      );
+      // Find user in mongoDB
+      // await UserModel.findOneAndUpdate(
+      //   { email },
+      //   { given_name, email, picture, accessToken },
+      //   { upsert: true, new: true }
+      // );
 
       res.status(200).json({ given_name, email, picture });
     } else {
