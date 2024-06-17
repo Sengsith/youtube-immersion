@@ -1,7 +1,7 @@
 export interface TranscriptLine {
   text: string;
-  duration: number;
-  offset: number;
+  duration: string;
+  offset: string;
   lang?: string;
 }
 
