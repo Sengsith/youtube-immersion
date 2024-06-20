@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import useFetchVideos from "../hooks/useFetchVideos";
-import { Link } from "react-router-dom";
 import Thumbnail from "./Thumbnail";
 
 const Trending = () => {

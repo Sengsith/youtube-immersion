@@ -22,7 +22,7 @@ const router = createBrowserRouter([
         element: <WatchPage />,
       },
       {
-        path: "/search/:searchQuery",
+        path: "/search",
         element: <SearchPage />,
       },
     ],

@@ -9,7 +9,7 @@ const useFetchVideos = () => {
   const [error, setError] = useState<string | null>(null);
 
   const formatDuration = (duration: string): string => {
-    if (duration === "P0D") {
+    if (duration === "P0D" || duration === "PT0S") {
       return "LIVE";
     }
     const regex =
@@ -71,13 +71,12 @@ const useFetchVideos = () => {
       const key = `key=${import.meta.env.VITE_YOUTUBE_API_KEY}`;
       // Trending page requires chart param
       // Search page requires IDs, doesn't need chart or regionCode
-
-      // No longer using location, chagne this to check videoId or some shit
       const params = videoIds ? part + IDs + regionCode + key : part + chart + regionCode + key;
       const url = BASE_VIDEOS_URL + params;
       const response = await fetch(url);
       const data = await response.json();
-      console.log("video data:", data);
+
+      console.log("data:", data);
 
       const videos = data.items?.map((item: any) => ({
         id: item.id,

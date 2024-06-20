@@ -7,11 +7,11 @@ const Search = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // Don't navigate to search page if empty search input
     if (!searchQuery) {
-      // Don't want to navigate to search page if empty search input
       return console.log("No search query inside input.");
     }
-    navigate(`/search/${encodeURIComponent(searchQuery)}`);
+    navigate(`/search?search_query=${encodeURIComponent(searchQuery)}`);
   };
 
   return (

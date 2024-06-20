@@ -1,14 +1,18 @@
 import { useEffect } from "react";
 import useFetchSearch from "../hooks/useFetchSearch";
 import useFetchVideos from "../hooks/useFetchVideos";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Thumbnail from "../components/Thumbnail";
 
 const SearchPage = () => {
-  // searchQuery is from the url
-  const { searchQuery } = useParams();
-  console.log("searchQuery:", searchQuery);
+  const useQuery = () => {
+    return new URLSearchParams(useLocation().search);
+  };
 
+  const query = useQuery();
+  const searchQuery = query.get("search_query") || "";
+
+  // Variables for videoID from a search query
   const {
     searchResults,
     loading: searchLoading,
@@ -16,16 +20,19 @@ const SearchPage = () => {
     getSearchData,
   } = useFetchSearch();
 
+  // Variables for actual video stats and data
   const { searchedData, loading: videoLoading, error: videoError, getVideos } = useFetchVideos();
 
   useEffect(() => {
-    if (searchQuery?.length !== 0) {
+    // Ignore empty input queries
+    if (searchQuery && searchQuery.length > 0) {
       getSearchData(searchQuery);
     }
   }, [searchQuery]);
 
   useEffect(() => {
-    if (searchResults.length !== 0) {
+    // Ignore empty searchResults
+    if (searchResults && searchResults.length > 0) {
       getVideos(searchResults);
     }
   }, [searchResults]);
