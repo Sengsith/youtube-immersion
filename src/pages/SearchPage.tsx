@@ -19,21 +19,22 @@ const SearchPage = () => {
   const { searchedData, loading: videoLoading, error: videoError, getVideos } = useFetchVideos();
 
   useEffect(() => {
-    console.log("SearchPage Empty useEffect");
-    getSearchData(searchQuery);
-  }, []);
+    if (searchQuery?.length !== 0) {
+      getSearchData(searchQuery);
+    }
+  }, [searchQuery]);
 
   useEffect(() => {
-    console.log("searchResults useEffect");
     if (searchResults.length !== 0) {
-      console.log("non-empty searchResults useEffect:", searchResults);
       getVideos(searchResults);
     }
   }, [searchResults]);
 
   return (
     <div className="search-page">
-      {searchLoading && <div>Loading...</div>}
+      {(searchLoading || videoLoading) && <div>Loading...</div>}
+      {searchError && <div>{searchError}</div>}
+      {videoError && <div>{videoError}</div>}
       <h2>Search Results</h2>
       <div className="search-results-list">
         {searchedData.map((video) => (
