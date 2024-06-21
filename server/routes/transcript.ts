@@ -14,12 +14,11 @@ router.post("/transcript", async (req, res) => {
 
   console.log("videoId received:", videoId);
   try {
-    YoutubeTranscript.fetchTranscript(videoId).then((result) => {
-      res.json({ result });
-    });
+    const result = await YoutubeTranscript.fetchTranscript(videoId);
+    res.json({ result });
   } catch (error) {
-    console.log("Credential verification failed:", error);
-    res.status(400).json({ error: "Credential verification failed" });
+    console.error("Transcript not available:", error);
+    res.status(400).json({ error: "Transcript not available:" });
   }
 });
 

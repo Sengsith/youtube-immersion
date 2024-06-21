@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Transcript } from "../types/transcript";
 import axios from "axios";
 
-const useFetchTranscript = (videoId: string | undefined) => {
+const useFetchTranscript = (videoId: string | null) => {
   const [transcript, setTranscript] = useState<Transcript | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);

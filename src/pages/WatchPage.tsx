@@ -6,7 +6,6 @@ import useQuery from "../hooks/useQuery";
 const WatchPage = () => {
   const query = useQuery();
   const videoId = query.get("v");
-  console.log("videoId:", videoId);
   const location = useLocation();
   const video = location.state?.video;
 
