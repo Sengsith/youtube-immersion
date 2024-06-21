@@ -1,14 +1,10 @@
 import { useEffect } from "react";
 import useFetchSearch from "../hooks/useFetchSearch";
 import useFetchVideos from "../hooks/useFetchVideos";
-import { useLocation } from "react-router-dom";
 import Thumbnail from "../components/Thumbnail";
+import useQuery from "../hooks/useQuery";
 
 const SearchPage = () => {
-  const useQuery = () => {
-    return new URLSearchParams(useLocation().search);
-  };
-
   const query = useQuery();
   const searchQuery = query.get("search_query") || "";
 

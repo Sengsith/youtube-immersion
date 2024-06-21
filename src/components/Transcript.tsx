@@ -1,6 +1,6 @@
 import useFetchTranscript from "../hooks/useFetchTranscript";
 
-const Transcript = ({ videoId }: { videoId: string | undefined }) => {
+const Transcript = ({ videoId }: { videoId: string | null }) => {
   const { transcript, loading, error } = useFetchTranscript(videoId);
 
   return (

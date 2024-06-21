@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const Thumbnail = ({ video }: { video: Video }) => {
   return (
     <div className="trending-video-thumbnail">
-      <Link to={`/watch/${video.id}`} state={{ video }}>
+      <Link to={`/watch?v=${video.id}`} state={{ video }}>
         <img src={video.thumbnail.url} alt={video.title} />
       </Link>
       <h3 className="video-title">{video.title}</h3>

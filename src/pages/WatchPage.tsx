@@ -1,9 +1,12 @@
-import { useParams, useLocation, useOutletContext } from "react-router-dom";
+import { useLocation, useOutletContext } from "react-router-dom";
 import Transcript from "../components/Transcript";
 import { UserProps } from "../types/userProps";
+import useQuery from "../hooks/useQuery";
 
 const WatchPage = () => {
-  const { videoId } = useParams();
+  const query = useQuery();
+  const videoId = query.get("v");
+  console.log("videoId:", videoId);
   const location = useLocation();
   const video = location.state?.video;
 
