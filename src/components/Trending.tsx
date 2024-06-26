@@ -12,7 +12,7 @@ const Trending = () => {
   return (
     <>
       <h2>Trending Videos</h2>
-      {loading && <div>Loading...</div>}
+      {loading && <div>Loading Trending...</div>}
       {error && <div>{error}|</div>}
       <div className="trending-video-list">
         {trendingResults.map((video) => (

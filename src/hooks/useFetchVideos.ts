@@ -5,7 +5,7 @@ import { formatDistanceToNow } from "date-fns";
 const useFetchVideos = () => {
   const [trendingResults, setTrendingResults] = useState<Video[]>([]);
   const [searchedData, setSearchedData] = useState<Video[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   const formatDuration = (duration: string): string => {
@@ -48,21 +48,26 @@ const useFetchVideos = () => {
     return `${views} views`;
   };
 
-  const getVideos = async (videoIds?: string[]) => {
+  const getVideos = async (videoIds?: string | string[]) => {
     // Return if videoIds was passed in but empty
     if (videoIds === null || videoIds?.length === 0) {
       console.log("No video IDs passed in or videoIds array is empty");
       return;
     }
     try {
+      setLoading(true);
       const BASE_VIDEOS_URL = "https://youtube.googleapis.com/youtube/v3/videos?";
       const part = "part=snippet%2CcontentDetails%2Cstatistics&";
       // Search page requires string[] video ids (id=""&id=""&id=""...)
-      const IDs = videoIds
-        ?.map((videoId) => {
-          return `id=${videoId}&`;
-        })
-        .join("");
+      // Possible that just a single string can be passed in
+      const IDs =
+        typeof videoIds === "string"
+          ? `id=${videoIds}&`
+          : videoIds
+              ?.map((videoId) => {
+                return `id=${videoId}&`;
+              })
+              .join("");
       const chart = "chart=mostPopular&";
       const regionCode = "regionCode=JP&";
       // maxResults automatically changes depending on searches passed in from Search.tsx
@@ -75,6 +80,7 @@ const useFetchVideos = () => {
       const url = BASE_VIDEOS_URL + params;
       const response = await fetch(url);
       const data = await response.json();
+      console.log("url:", url);
 
       console.log("data:", data);
 
