@@ -9,11 +9,18 @@ const useFetchTranscript = (videoId: string | null) => {
 
   useEffect(() => {
     const formatTimestamp = (offset: number): string => {
-      const minutes = Math.round(offset / 60);
-      const seconds = Math.round(offset % 60);
+      const hours = Math.floor(offset / 3600);
+      const minutes = Math.floor((offset % 3600) / 60);
+      const seconds = Math.floor(offset % 60);
 
+      const paddedHours = hours.toString().padStart(2, "0");
       const paddedMinutes = minutes.toString().padStart(2, "0");
       const paddedSeconds = seconds.toString().padStart(2, "0");
+
+      // Only want hours to show up if there is an hour
+      if (hours > 0) {
+        return `${paddedHours}:${paddedMinutes}:${paddedSeconds}`;
+      }
 
       return `${paddedMinutes}:${paddedSeconds}`;
     };
