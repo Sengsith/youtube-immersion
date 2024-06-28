@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useOutletContext } from "react-router-dom";
+import Youtube, { YouTubeEvent, YouTubePlayer } from "react-youtube";
 import Transcript from "../components/Transcript";
 import { UserProps } from "../types/userProps";
 import useQuery from "../hooks/useQuery";
@@ -9,16 +10,17 @@ import { Video } from "../types/video";
 const WatchPage = () => {
   const query = useQuery();
   // const videoId = query.get("v");
-  const [videoId, setVideoId] = useState<string | null>(query.get("v"));
+  const [videoId, setVideoId] = useState<string | undefined>(query.get("v") || undefined);
   const location = useLocation();
   const video: Video = location.state?.video;
   const { searchedData, loading, error, getVideos } = useFetchVideos();
+  const [player, setPlayer] = useState<YouTubePlayer | null>(null);
 
   console.log("videoId:", videoId);
   console.log("video:", video);
 
   useEffect(() => {
-    const newVideoId = query.get("v");
+    const newVideoId = query.get("v") || undefined;
     if (newVideoId !== videoId) {
       setVideoId(newVideoId);
     }
@@ -42,17 +44,16 @@ const WatchPage = () => {
     return <div>No video data found.</div>;
   }
 
+  const onReady = (event: YouTubeEvent) => {
+    setPlayer(event.target);
+  };
+
   return (
     <>
       {loading && <div>Loading WatchPage...</div>}
       {error && <div>Sorry! {error}</div>}
       <h2>{title}</h2>
-      <iframe
-        width="420"
-        height="315"
-        src={`https://www.youtube.com/embed/${videoId}`}
-        allowFullScreen
-      ></iframe>
+      <Youtube videoId={videoId} onReady={onReady} opts={{ width: "420", height: "315" }} />
       <div className="video-details">
         <h3>{channelTitle}</h3>
         <p>{viewCount}</p>
@@ -60,7 +61,7 @@ const WatchPage = () => {
         <p>{publishedAt}</p>
       </div>
       <div className="video-transcript">
-        <Transcript videoId={videoId} />
+        <Transcript videoId={videoId ?? ""} player={player} />
       </div>
     </>
   );

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Transcript } from "../types/transcript";
 import axios from "axios";
 
-const useFetchTranscript = (videoId: string | null) => {
+const useFetchTranscript = (videoId: string | undefined) => {
   const [transcript, setTranscript] = useState<Transcript | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -34,7 +34,8 @@ const useFetchTranscript = (videoId: string | null) => {
         const transcript = res.data.result.map((line: any) => ({
           text: line.text,
           duration: line.duration,
-          offset: formatTimestamp(line.offset),
+          offset: line.offset,
+          timestamp: formatTimestamp(line.offset),
           lang: line.lang,
         }));
         setTranscript(transcript);
