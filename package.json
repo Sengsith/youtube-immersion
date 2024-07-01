@@ -21,7 +21,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.1",
     "react-youtube": "^10.1.0",
-    "youtube-transcript": "^1.2.1"
+    "youtube-caption-extractor": "^1.4.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",

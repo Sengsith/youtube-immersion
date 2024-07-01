@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { YoutubeTranscript } from "youtube-transcript";
+import { getSubtitles } from "youtube-caption-extractor";
 
 const router = Router();
 
@@ -14,11 +14,17 @@ router.post("/transcript", async (req, res) => {
 
   console.log("videoId received:", videoId);
   try {
-    const result = await YoutubeTranscript.fetchTranscript(videoId);
+    const result = await getSubtitles({ videoID: videoId, lang: "ja" });
+    console.log("transcript backend results:", result);
+
+    if (result.length === 0) {
+      return res.status(404).json({ error: "Transcript not available" });
+    }
+
     res.json({ result });
   } catch (error) {
     console.error("Transcript not available:", error);
-    res.status(400).json({ error: "Transcript not available:" });
+    res.status(500).json({ error: "Transcript not available:" });
   }
 });
 

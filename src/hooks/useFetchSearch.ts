@@ -2,7 +2,7 @@ import { useState } from "react";
 
 const useFetchSearch = () => {
   const [searchResults, setSearchResults] = useState<string[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   const getSearchData = async (query: string | undefined) => {
@@ -12,6 +12,7 @@ const useFetchSearch = () => {
     }
 
     try {
+      setLoading(true);
       console.log("query:", query);
       const BASE_URL = "https://youtube.googleapis.com/youtube/v3/search?";
       const part = "part=snippet&";

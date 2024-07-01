@@ -4,7 +4,7 @@ import axios from "axios";
 
 const useFetchTranscript = (videoId: string | undefined) => {
   const [transcript, setTranscript] = useState<Transcript | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -27,16 +27,16 @@ const useFetchTranscript = (videoId: string | undefined) => {
 
     const scrapeTranscript = async () => {
       try {
+        setLoading(true);
         const res = await axios.post("http://localhost:3000/api/transcript", {
           videoId,
         });
         console.log("Data from backend received-Transcript:", res.data.result);
         const transcript = res.data.result.map((line: any) => ({
           text: line.text,
-          duration: line.duration,
-          offset: line.offset,
-          timestamp: formatTimestamp(line.offset),
-          lang: line.lang,
+          duration: line.dur,
+          offset: line.start,
+          timestamp: formatTimestamp(line.start),
         }));
         setTranscript(transcript);
         setLoading(false);
