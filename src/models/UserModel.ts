@@ -3,14 +3,15 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  given_name: String,
   email: {
     type: String,
     unique: true,
     required: true,
   },
+  given_name: String,
   picture: String,
-  accessToken: String,
+  refreshToken: String,
+  favorites: [String],
 });
 
 const UserModel = mongoose.model("User", userSchema);

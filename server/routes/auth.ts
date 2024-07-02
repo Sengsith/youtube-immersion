@@ -23,7 +23,6 @@ router.post("/login", async (req, res) => {
     console.error("Tokens are missing in the request body.");
     res.status(400).json({ error: "Tokens are required" });
   }
-  console.log("Tokens received:", tokens);
 
   // access_token (to talk with google APIs)
   // refresh_token (to refresh user's token)
@@ -31,17 +30,20 @@ router.post("/login", async (req, res) => {
 
   // Get user information (name, email, picture, etc)
   try {
+    // Used to get payload (user data)
     const idToken = tokens.id_token;
-    const accessToken = tokens.access_token;
+    // Used to keep user logged in
+    const refreshToken = tokens.refresh_token;
+
     if (!idToken) {
       console.error("ID token is missing in the tokens.");
       res.status(400).json({ error: "ID token is missing in the tokens" });
       return;
     }
 
-    if (!accessToken) {
-      console.error("Access token is missing in the tokens.");
-      res.status(400).json({ error: "Access token is missing in the tokens." });
+    if (!refreshToken) {
+      console.error("Refresh token is missing in the tokens.");
+      res.status(400).json({ error: "Refresh token is missing in the tokens." });
       return;
     }
 
@@ -50,17 +52,16 @@ router.post("/login", async (req, res) => {
       audience: CLIENT_ID, // clientId from google developer console
     });
     const payload = ticket.getPayload();
-    console.log("Payload received:", payload);
 
     if (payload) {
       const { given_name, email, picture } = payload;
 
-      // Find user in mongoDB
-      // await UserModel.findOneAndUpdate(
-      //   { email },
-      //   { given_name, email, picture, accessToken },
-      //   { upsert: true, new: true }
-      // );
+      // Find/add user in mongoDB
+      await UserModel.findOneAndUpdate(
+        { email }, // Query
+        { given_name, email, picture, refreshToken }, // Update
+        { upsert: true, new: true } // Options
+      );
 
       res.status(200).json({ given_name, email, picture });
     } else {
