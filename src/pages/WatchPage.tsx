@@ -6,10 +6,10 @@ import { UserProps } from "../types/userProps";
 import useQuery from "../hooks/useQuery";
 import useFetchVideos from "../hooks/useFetchVideos";
 import { Video } from "../types/video";
+import axios from "axios";
 
 const WatchPage = () => {
   const query = useQuery();
-  // const videoId = query.get("v");
   const [videoId, setVideoId] = useState<string | undefined>(query.get("v") || undefined);
   const location = useLocation();
   const video: Video = location.state?.video;
@@ -36,9 +36,9 @@ const WatchPage = () => {
   console.log("video:", video);
   console.log("searchedData[0]:,", searchedData[0]);
 
-  // const context = useOutletContext<UserProps | null>();
-  // const user = context?.user ?? null;
-  // const setUser = context?.setUser ?? (() => {});
+  const context = useOutletContext<UserProps | null>();
+  const user = context?.user ?? null;
+  const setUser = context?.setUser ?? (() => {});
 
   if (!video && searchedData.length === 0 && !loading) {
     return <div>No video data found.</div>;
@@ -46,6 +46,24 @@ const WatchPage = () => {
 
   const onReady = (event: YouTubeEvent) => {
     setPlayer(event.target);
+  };
+
+  const handleClickFavorite = async () => {
+    if (!user) {
+      alert("Please login to favorite a video!");
+      return;
+    }
+    console.log("Favorite clicked");
+    try {
+      // Send videoId to backend
+      const res = await axios.post("http://localhost:3000/api/favorite", {
+        videoId,
+        email: user.email,
+      });
+      console.log("Favorite video success", res);
+    } catch (error) {
+      console.error("Error sending favorite videoId to backend:", error);
+    }
   };
 
   return (
@@ -59,6 +77,9 @@ const WatchPage = () => {
         <p>{viewCount}</p>
         <p>{duration}</p>
         <p>{publishedAt}</p>
+      </div>
+      <div className="favorite-video-btn cursor-pointer" onClick={handleClickFavorite}>
+        <p>Favorite</p>
       </div>
       <div className="video-transcript">
         <Transcript videoId={videoId ?? ""} player={player} />

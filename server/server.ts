@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import auth from "./routes/auth";
 import transcript from "./routes/transcript";
+import favorite from "./routes/favorite";
 
 dotenv.config({ path: "../.env" });
 
@@ -36,6 +37,9 @@ app.use("/api", auth);
 
 // Puppeteer route to scrape transcript
 app.use("/api", transcript);
+
+// Favorite route for storing videoIds into database
+app.use("/api", favorite);
 
 app.listen(port, () => {
   console.log(`Hello! I am listening on port ${port}`);

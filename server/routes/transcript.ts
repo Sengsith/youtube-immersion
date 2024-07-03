@@ -12,8 +12,8 @@ router.post("/transcript", async (req, res) => {
     return res.status(400).json({ error: "Video ID is required" });
   }
 
-  console.log("videoId received:", videoId);
   try {
+    console.log("videoId received:", videoId);
     const result = await getSubtitles({ videoID: videoId, lang: "ja" });
     console.log("transcript backend results:", result);
 

@@ -20,7 +20,7 @@ const Login = ({ user, setUser, inHeader = false }: UserProps) => {
           console.log("Login success", res.data);
           alert(`Welcome ${res.data.given_name} at ${res.data.email}`);
         } catch (error) {
-          console.log("Error logging in.", error);
+          console.error("Error logging in.", error);
           if (axios.isAxiosError(error)) {
             console.error("Axios error response:", error.response);
           }
