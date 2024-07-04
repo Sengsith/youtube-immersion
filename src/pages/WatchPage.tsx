@@ -15,9 +15,11 @@ const WatchPage = () => {
   const video: Video = location.state?.video;
   const { searchedData, loading, error, getVideos } = useFetchVideos();
   const [player, setPlayer] = useState<YouTubePlayer | null>(null);
+  const [isFavorite, setIsFavorite] = useState<boolean>(false);
 
-  console.log("videoId:", videoId);
-  console.log("video:", video);
+  const context = useOutletContext<UserProps | null>();
+  const user = context?.user ?? null;
+  const setUser = context?.setUser ?? (() => {});
 
   useEffect(() => {
     const newVideoId = query.get("v") || undefined;
@@ -32,13 +34,15 @@ const WatchPage = () => {
     }
   }, [location.pathname]);
 
+  useEffect(() => {
+    if (user && videoId) {
+      setIsFavorite(user.favorites.includes(videoId) ? true : false);
+    }
+  }, [user]);
+
   const { title, channelTitle, viewCount, duration, publishedAt } = video || searchedData[0] || {};
   console.log("video:", video);
   console.log("searchedData[0]:,", searchedData[0]);
-
-  const context = useOutletContext<UserProps | null>();
-  const user = context?.user ?? null;
-  const setUser = context?.setUser ?? (() => {});
 
   if (!video && searchedData.length === 0 && !loading) {
     return <div>No video data found.</div>;
@@ -59,12 +63,26 @@ const WatchPage = () => {
       const res = await axios.post("http://localhost:3000/api/favorite", {
         videoId,
         email: user.email,
+        isFavorite,
       });
-      console.log("Favorite video success", res);
+      setIsFavorite(!isFavorite);
+      setUserFavorites(res.data);
     } catch (error) {
-      console.error("Error sending favorite videoId to backend:", error);
+      console.error("Error sending videoId to backend for favorites:", error);
     }
   };
+
+  const setUserFavorites = (favorites: any) => {
+    setUser((prevUser) => {
+      if (prevUser) {
+        return { ...prevUser, favorites: favorites };
+      } else {
+        return prevUser;
+      }
+    });
+  };
+
+  // TODO: Whenever we paste a videoId into the URL, it logs us out
 
   return (
     <>
@@ -79,7 +97,7 @@ const WatchPage = () => {
         <p>{publishedAt}</p>
       </div>
       <div className="favorite-video-btn cursor-pointer" onClick={handleClickFavorite}>
-        <p>Favorite</p>
+        {isFavorite ? <p>Unfavorite</p> : <p>Favorite</p>}
       </div>
       <div className="video-transcript">
         <Transcript videoId={videoId ?? ""} player={player} />

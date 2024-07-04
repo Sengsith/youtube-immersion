@@ -57,13 +57,13 @@ router.post("/login", async (req, res) => {
       const { given_name, email, picture } = payload;
 
       // Find/add user in mongoDB
-      await UserModel.findOneAndUpdate(
+      const user = await UserModel.findOneAndUpdate(
         { email }, // Query
         { given_name, email, picture, refreshToken }, // Update
         { upsert: true, new: true } // Options
       );
 
-      res.status(200).json({ given_name, email, picture });
+      res.status(200).json({ given_name, email, picture, favorites: user.favorites });
     } else {
       console.log("Invalid Payload");
       res.status(400).json({ error: "Invalid payload" });
