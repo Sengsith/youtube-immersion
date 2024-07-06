@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import { Outlet, useLocation } from "react-router-dom";
@@ -10,6 +10,23 @@ const Layout = () => {
 
   // Only want to pass state into WatchPage
   const shouldPassProps = location.pathname.includes("/watch");
+
+  useEffect(() => {
+    // Initialize user from localStorage if it exists
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  useEffect(() => {
+    // Update localStorage whenever user changes
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+    } else {
+      localStorage.removeItem("user");
+    }
+  }, [user]);
 
   return (
     <>

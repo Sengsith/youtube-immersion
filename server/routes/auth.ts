@@ -33,7 +33,7 @@ router.post("/login", async (req, res) => {
     // Used to get payload (user data)
     const idToken = tokens.id_token;
     // Used to keep user logged in
-    const refreshToken = tokens.refresh_token;
+    // const refreshToken = tokens.refresh_token;
 
     if (!idToken) {
       console.error("ID token is missing in the tokens.");
@@ -41,11 +41,11 @@ router.post("/login", async (req, res) => {
       return;
     }
 
-    if (!refreshToken) {
-      console.error("Refresh token is missing in the tokens.");
-      res.status(400).json({ error: "Refresh token is missing in the tokens." });
-      return;
-    }
+    // if (!refreshToken) {
+    //   console.error("Refresh token is missing in the tokens.");
+    //   res.status(400).json({ error: "Refresh token is missing in the tokens." });
+    //   return;
+    // }
 
     const ticket = await client.verifyIdToken({
       idToken: idToken, // Exchanged from the auth-code sent from Login.tsx
@@ -59,17 +59,17 @@ router.post("/login", async (req, res) => {
       // Find/add user in mongoDB
       const user = await UserModel.findOneAndUpdate(
         { email }, // Query
-        { given_name, email, picture, refreshToken }, // Update
+        { given_name, email, picture /*refreshToken*/ }, // Update
         { upsert: true, new: true } // Options
       );
 
       res.status(200).json({ given_name, email, picture, favorites: user.favorites });
     } else {
-      console.log("Invalid Payload");
+      console.error("Invalid Payload");
       res.status(400).json({ error: "Invalid payload" });
     }
   } catch (error) {
-    console.log("Credential verification failed:", error);
+    console.error("Credential verification failed");
     res.status(400).json({ error: "Credential verification failed" });
   }
 });

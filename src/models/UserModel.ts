@@ -10,7 +10,7 @@ const userSchema = new Schema({
   },
   given_name: String,
   picture: String,
-  refreshToken: String,
+  // refreshToken: String,
   favorites: [String],
 });
 
