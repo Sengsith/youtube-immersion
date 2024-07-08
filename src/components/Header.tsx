@@ -11,6 +11,9 @@ const Header = ({ user, setUser, inHeader }: UserProps) => {
       <Search />
       <Login user={user} setUser={setUser} inHeader={inHeader} />
       <Logout user={user} setUser={setUser} />
+      <Link to="/favorites" state={user}>
+        Favorites
+      </Link>
     </div>
   );
 };

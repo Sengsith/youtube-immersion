@@ -9,7 +9,8 @@ const Layout = () => {
   const location = useLocation();
 
   // Only want to pass state into WatchPage
-  const shouldPassProps = location.pathname.includes("/watch");
+  const shouldPassProps =
+    location.pathname.includes("/watch") || location.pathname.includes("/favorites");
 
   useEffect(() => {
     // Initialize user from localStorage if it exists
