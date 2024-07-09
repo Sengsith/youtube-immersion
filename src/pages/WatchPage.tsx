@@ -96,9 +96,9 @@ const WatchPage = () => {
         <p>{duration}</p>
         <p>{publishedAt}</p>
       </div>
-      <div className="favorite-video-btn cursor-pointer" onClick={handleClickFavorite}>
+      <button className="favorite-video-btn cursor-pointer" onClick={handleClickFavorite}>
         {isFavorite ? <p>Unfavorite</p> : <p>Favorite</p>}
-      </div>
+      </button>
       <div className="video-transcript">
         <Transcript videoId={videoId ?? ""} player={player} />
       </div>

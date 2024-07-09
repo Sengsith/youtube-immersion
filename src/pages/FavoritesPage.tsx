@@ -72,13 +72,13 @@ const FavoritesPage = () => {
         {searchedData.map((video) => (
           <>
             <Thumbnail key={video.id} video={video} />
-            <div
+            <button
               className="unfavorite-video-btn cursor-pointer"
               onClick={handleClickUnfavorite}
               id={`unfavorite-btn-${video.id}`}
             >
               Unfavorite
-            </div>
+            </button>
           </>
         ))}
       </div>
