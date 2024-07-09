@@ -6,7 +6,7 @@ import { UserProps } from "../types/userProps";
 import useQuery from "../hooks/useQuery";
 import useFetchVideos from "../hooks/useFetchVideos";
 import { Video } from "../types/video";
-import axios from "axios";
+import useFavorites from "../hooks/useFavorites";
 
 const WatchPage = () => {
   const query = useQuery();
@@ -20,6 +20,7 @@ const WatchPage = () => {
   const context = useOutletContext<UserProps | null>();
   const user = context?.user ?? null;
   const setUser = context?.setUser ?? (() => {});
+  const { handleFavorite } = useFavorites(setUser);
 
   useEffect(() => {
     const newVideoId = query.get("v") || undefined;
@@ -58,31 +59,9 @@ const WatchPage = () => {
       return;
     }
     console.log("Favorite clicked");
-    try {
-      // Send videoId to backend
-      const res = await axios.post("http://localhost:3000/api/favorite", {
-        videoId,
-        email: user.email,
-        isFavorite,
-      });
-      setIsFavorite(!isFavorite);
-      setUserFavorites(res.data);
-    } catch (error) {
-      console.error("Error sending videoId to backend for favorites:", error);
-    }
+    handleFavorite({ videoId, email: user.email, isFavorite });
+    setIsFavorite(!isFavorite);
   };
-
-  const setUserFavorites = (favorites: any) => {
-    setUser((prevUser) => {
-      if (prevUser) {
-        return { ...prevUser, favorites: favorites };
-      } else {
-        return prevUser;
-      }
-    });
-  };
-
-  // TODO: Whenever we paste a videoId into the URL, it logs us out
 
   return (
     <>

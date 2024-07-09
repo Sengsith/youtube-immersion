@@ -4,12 +4,13 @@ import { UserProps } from "../types/userProps";
 import useFetchVideos from "../hooks/useFetchVideos";
 import Thumbnail from "../components/Thumbnail";
 import Login from "../components/Login";
-import axios from "axios";
+import useFavorites from "../hooks/useFavorites";
 
 const FavoritesPage = () => {
   const context = useOutletContext<UserProps | null>();
   const user = context?.user ?? null;
   const setUser = context?.setUser ?? (() => {});
+  const { handleFavorite } = useFavorites(setUser);
 
   const { searchedData, loading, error, getVideos } = useFetchVideos();
 
@@ -28,11 +29,11 @@ const FavoritesPage = () => {
     );
   }
 
-  // Unfavorite
-  // Unfavorite is clicked
-  // Remove(set) the favorites from the user's favorites array locally
-  // Update backend
   const handleClickUnfavorite = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    // Unfavorite
+    // Unfavorite is clicked
+    // Remove(set) the favorites from the user's favorites array locally
+    // Update backend
     if (!user) {
       alert("Please login to favorite a video!");
       return;
@@ -40,27 +41,7 @@ const FavoritesPage = () => {
     console.log("unfavorite");
     const videoId = e.currentTarget.id.split("-").pop();
 
-    try {
-      // Send videoId to backend
-      const res = await axios.post("http://localhost:3000/api/favorite", {
-        videoId,
-        email: user.email,
-        isFavorite: true,
-      });
-      setUserFavorites(res.data);
-    } catch (error) {
-      console.error("Error sending videoId to backend for favorites:", error);
-    }
-  };
-
-  const setUserFavorites = (favorites: any) => {
-    setUser((prevUser) => {
-      if (prevUser) {
-        return { ...prevUser, favorites: favorites };
-      } else {
-        return prevUser;
-      }
-    });
+    handleFavorite({ videoId, email: user.email, isFavorite: true });
   };
 
   return (
