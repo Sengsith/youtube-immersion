@@ -8,7 +8,7 @@ const Layout = () => {
   const [user, setUser] = useState<User | null>(null);
   const location = useLocation();
 
-  // Only want to pass state into WatchPage
+  // Only want to pass state into WatchPage or FavoritesPage
   const shouldPassProps =
     location.pathname.includes("/watch") || location.pathname.includes("/favorites");
 
