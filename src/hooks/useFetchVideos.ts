@@ -72,11 +72,13 @@ const useFetchVideos = () => {
       const regionCode = "regionCode=JP&";
       // maxResults automatically changes depending on searches passed in from Search.tsx
       // However, change value for desired max amount of trending results.
-      // const maxResults = 5;
+      const maxResults = `maxResults=15&`;
       const key = `key=${import.meta.env.VITE_YOUTUBE_API_KEY}`;
       // Trending page requires chart param
       // Search page requires IDs, doesn't need chart or regionCode
-      const params = videoIds ? part + IDs + regionCode + key : part + chart + regionCode + key;
+      const params = videoIds
+        ? part + IDs + regionCode + maxResults + key
+        : part + chart + regionCode + maxResults + key;
       const url = BASE_VIDEOS_URL + params;
       const response = await fetch(url);
       const data = await response.json();
