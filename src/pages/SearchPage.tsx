@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 import useFetchSearch from "../hooks/useFetchSearch";
 import useFetchVideos from "../hooks/useFetchVideos";
-import Thumbnail from "../components/Thumbnail";
 import useQuery from "../hooks/useQuery";
+import usePaginate from "../hooks/usePaginate";
+import Thumbnail from "../components/Thumbnail";
+import Paginate from "../components/Paginate";
 
 const SearchPage = () => {
   const query = useQuery();
@@ -18,6 +20,11 @@ const SearchPage = () => {
 
   // Variables for actual video stats and data
   const { searchedData, loading: videoLoading, error: videoError, getVideos } = useFetchVideos();
+
+  const { currentItems, pageCount, handlePageClick } = usePaginate({
+    items: searchedData,
+    itemsPerPage: 5,
+  });
 
   useEffect(() => {
     // Ignore empty input queries
@@ -40,10 +47,11 @@ const SearchPage = () => {
       {videoError && <div>{videoError}</div>}
       <h2>Search Results</h2>
       <div className="search-results-list">
-        {searchedData.map((video) => (
+        {currentItems?.map((video) => (
           <Thumbnail key={video.id} video={video} />
         ))}
       </div>
+      <Paginate pageCount={pageCount} handlePageClick={handlePageClick} />
     </div>
   );
 };

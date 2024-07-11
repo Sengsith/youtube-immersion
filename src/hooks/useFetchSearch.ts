@@ -16,7 +16,7 @@ const useFetchSearch = () => {
       console.log("query:", query);
       const BASE_URL = "https://youtube.googleapis.com/youtube/v3/search?";
       const part = "part=snippet&";
-      const maxResults = "maxResults=3&";
+      const maxResults = "maxResults=15&";
       const q = `q=${query}&`;
       const regionCode = "regionCode=JP&";
       const relevanceLanguage = "relevanceLanguage=JA&";
