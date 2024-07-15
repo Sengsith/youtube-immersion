@@ -29,21 +29,20 @@ const WatchPage = () => {
     }
 
     if (!video && videoId) {
-      console.log("No video data obtained, but we have an ID from URL");
-      // Run the fetch with this new videoId
+      // No video data obtained, but we have an ID from URL
+      // fetch with this new videoId
       getVideos(videoId);
     }
   }, [location.pathname]);
 
   useEffect(() => {
     if (user && videoId) {
-      setIsFavorite(user.favorites.includes(videoId) ? true : false);
+      setIsFavorite(user.favorites.includes(videoId));
     }
   }, [user]);
 
-  const { title, channelTitle, viewCount, duration, publishedAt } = video || searchedData[0] || {};
-  console.log("video:", video);
-  console.log("searchedData[0]:,", searchedData[0]);
+  const { title, channelTitle, channelThumbnail, viewCount, duration, publishedAt } =
+    video || searchedData[0] || {};
 
   if (!video && searchedData.length === 0 && !loading) {
     return <div>No video data found.</div>;
@@ -58,7 +57,6 @@ const WatchPage = () => {
       alert("Please login to favorite a video!");
       return;
     }
-    console.log("Favorite clicked");
     handleFavorite({ videoId, email: user.email, isFavorite });
     setIsFavorite(!isFavorite);
   };
@@ -70,6 +68,7 @@ const WatchPage = () => {
       <h2>{title}</h2>
       <Youtube videoId={videoId} onReady={onReady} opts={{ width: "420", height: "315" }} />
       <div className="video-details">
+        <img src={channelThumbnail.url} alt={channelTitle} />
         <h3>{channelTitle}</h3>
         <p>{viewCount}</p>
         <p>{duration}</p>

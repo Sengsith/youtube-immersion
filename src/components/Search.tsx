@@ -11,6 +11,7 @@ const Search = () => {
     if (!searchQuery) {
       return console.log("No search query inside input.");
     }
+    // Visual behavior on firefox: doesn't show that it's encoded in address bar but it actually is
     navigate(`/search?search_query=${encodeURIComponent(searchQuery)}`);
   };
 

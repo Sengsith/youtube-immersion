@@ -7,6 +7,11 @@ export interface Video {
     height: number;
     width: number;
   };
+  channelThumbnail: {
+    url: string;
+    height: number;
+    width: number;
+  };
   channelTitle: string;
   duration: string;
   viewCount: string;

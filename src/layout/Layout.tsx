@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
-import { Outlet, useLocation } from "react-router-dom";
 import { User } from "../types/user";
 
 const Layout = () => {
+  // User state passed down into various components using context
   const [user, setUser] = useState<User | null>(null);
   const location = useLocation();
 

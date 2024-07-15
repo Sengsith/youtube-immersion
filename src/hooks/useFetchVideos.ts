@@ -86,15 +86,29 @@ const useFetchVideos = () => {
 
       console.log("data:", data);
 
-      const videos = data.items?.map((item: any) => ({
-        id: item.id,
-        publishedAt: formatPublishedDate(item.snippet.publishedAt),
-        title: item.snippet.title,
-        thumbnail: item.snippet.thumbnails.default,
-        channelTitle: item.snippet.channelTitle,
-        duration: formatDuration(item.contentDetails.duration),
-        viewCount: formatViews(item.statistics.viewCount),
-      }));
+      // Promise.all for the async inside our map function
+      // Need to get channel thumbnails because it is a different API call
+      const videos = await Promise.all(
+        data.items?.map(async (item: any) => {
+          // Channels.list API call
+          const CHANNEL_URL = `https://youtube.googleapis.com/youtube/v3/channels?part=snippet&id=${
+            item.snippet.channelId
+          }&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`;
+          const response = await fetch(CHANNEL_URL);
+          const channelData = await response.json();
+
+          return {
+            id: item.id,
+            publishedAt: formatPublishedDate(item.snippet.publishedAt),
+            title: item.snippet.title,
+            thumbnail: item.snippet.thumbnails.default,
+            channelThumbnail: channelData.items[0].snippet.thumbnails.default,
+            channelTitle: item.snippet.channelTitle,
+            duration: formatDuration(item.contentDetails.duration),
+            viewCount: formatViews(item.statistics.viewCount),
+          };
+        })
+      );
 
       if (IDs) {
         setSearchedData(videos);

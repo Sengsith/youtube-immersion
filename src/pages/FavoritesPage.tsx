@@ -37,7 +37,6 @@ const FavoritesPage = () => {
   }
 
   const handleClickUnfavorite = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    // Unfavorite
     // Unfavorite is clicked
     // Remove(set) the favorites from the user's favorites array locally
     // Update backend
@@ -45,7 +44,6 @@ const FavoritesPage = () => {
       alert("Please login to favorite a video!");
       return;
     }
-    console.log("unfavorite");
     const videoId = e.currentTarget.id.split("-").pop();
 
     handleFavorite({ videoId, email: user.email, isFavorite: true });
