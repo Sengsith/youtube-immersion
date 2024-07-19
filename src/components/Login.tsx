@@ -1,8 +1,12 @@
+import { useState } from "react";
 import axios from "axios";
 import { useGoogleLogin } from "@react-oauth/google";
 import { UserProps } from "../types/userProps";
+import { FcGoogle } from "react-icons/fc";
 
 const Login = ({ user, setUser, inHeader = false }: UserProps) => {
+  const [isOptionsOpen, setIsOptionsOpen] = useState(false);
+
   const handleLogin = useGoogleLogin({
     flow: "auth-code",
     onSuccess: async ({ code }) => {
@@ -32,12 +36,30 @@ const Login = ({ user, setUser, inHeader = false }: UserProps) => {
     scope: "profile email https://www.googleapis.com/auth/youtube.force-ssl",
   });
 
+  const handleLogout = () => {
+    setUser(null);
+  };
+
   return (
     <>
       {user ? (
-        <div>{inHeader && <p>Welcome, {user.given_name}!</p>}</div>
+        <div>
+          {inHeader && (
+            <button className="" onClick={() => setIsOptionsOpen(!isOptionsOpen)}>
+              {user.given_name}
+            </button>
+          )}
+          {isOptionsOpen && (
+            <div className="user-options text-white absolute bg-black bg-opacity-40 p-2 rounded-md">
+              <button onClick={handleLogout}>Log out</button>
+            </div>
+          )}
+        </div>
       ) : (
-        <button onClick={() => handleLogin()}>Login with Google</button>
+        <button className="flex items-center gap-2" onClick={() => handleLogin()}>
+          <FcGoogle />
+          <p>Sign in with Google</p>
+        </button>
       )}
     </>
   );

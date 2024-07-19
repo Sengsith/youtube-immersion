@@ -32,14 +32,9 @@ const Layout = () => {
 
   return (
     <>
-      <div className="layout">
-        <Header user={user} setUser={setUser} inHeader={true} />
-        <div className="main-content">
-          <Sidebar />
-          <div className="content">
-            <Outlet context={shouldPassProps ? { user, setUser } : null} />
-          </div>
-        </div>
+      <Header user={user} setUser={setUser} inHeader={true} />
+      <div className="main-content bg-zinc-900 text-white">
+        <Outlet context={shouldPassProps ? { user, setUser } : null} />
       </div>
     </>
   );

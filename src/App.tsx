@@ -5,11 +5,11 @@ import router from "./router";
 
 function App() {
   return (
-    <>
+    <div id="app" className="font-roboto">
       <GoogleOAuthProvider clientId={import.meta.env.VITE_CLIENT_ID}>
         <RouterProvider router={router} />
       </GoogleOAuthProvider>
-    </>
+    </div>
   );
 }
 

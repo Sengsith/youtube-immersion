@@ -56,8 +56,8 @@ const FavoritesPage = () => {
       <h2>{user ? `${user.given_name}'s ` : ""}FavoritesPage</h2>
       <div className="favorite-video-list">
         {currentItems?.map((video) => (
-          <>
-            <Thumbnail key={video.id} video={video} />
+          <div className="favorite-item" key={video.id}>
+            <Thumbnail video={video} />
             <button
               className="unfavorite-video-btn cursor-pointer"
               onClick={handleClickUnfavorite}
@@ -65,7 +65,7 @@ const FavoritesPage = () => {
             >
               Unfavorite
             </button>
-          </>
+          </div>
         ))}
       </div>
       <Paginate pageCount={pageCount} handlePageClick={handlePageClick} />

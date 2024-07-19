@@ -16,7 +16,7 @@ const Search = () => {
   };
 
   return (
-    <div>
+    <div className="flex items-center w-full">
       <form onSubmit={handleSubmit}>
         <input
           className="border-sky-400 border"
@@ -24,7 +24,7 @@ const Search = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-        <button className="border border-green-500" type="submit">
+        <button className="ml-4" type="submit">
           Search
         </button>
       </form>

@@ -70,8 +70,7 @@ const useFetchVideos = () => {
               .join("");
       const chart = "chart=mostPopular&";
       const regionCode = "regionCode=JP&";
-      // maxResults automatically changes depending on searches passed in from Search.tsx
-      // However, change value for desired max amount of trending results.
+      // Default maxResults is 5 if undefined
       const maxResults = `maxResults=15&`;
       const key = `key=${import.meta.env.VITE_YOUTUBE_API_KEY}`;
       // Trending page requires chart param
