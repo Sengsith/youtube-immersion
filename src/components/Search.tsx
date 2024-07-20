@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FaMagnifyingGlass } from "react-icons/fa6";
 
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -16,16 +17,16 @@ const Search = () => {
   };
 
   return (
-    <div className="flex items-center w-full">
-      <form onSubmit={handleSubmit}>
+    <div id="search-bar-container" className="flex items-center grow">
+      <form id="search-form" onSubmit={handleSubmit} className="flex items-center grow">
         <input
-          className="border-sky-400 border"
+          className="grow"
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
         <button className="ml-4" type="submit">
-          Search
+          <FaMagnifyingGlass />
         </button>
       </form>
     </div>

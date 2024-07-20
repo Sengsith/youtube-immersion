@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Header from "../components/Header";
-import Sidebar from "../components/Sidebar";
 import { User } from "../types/user";
 
 const Layout = () => {
@@ -33,9 +32,9 @@ const Layout = () => {
   return (
     <>
       <Header user={user} setUser={setUser} inHeader={true} />
-      <div className="main-content bg-zinc-900 text-white">
+      <main id="outlet" className="main-content bg-zinc-900 text-white px-4 py-4">
         <Outlet context={shouldPassProps ? { user, setUser } : null} />
-      </div>
+      </main>
     </>
   );
 };

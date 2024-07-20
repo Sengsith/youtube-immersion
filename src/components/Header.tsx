@@ -10,19 +10,19 @@ const Header = ({ user, setUser, inHeader }: UserProps) => {
   const [showSearch, setShowSearch] = useState(false);
 
   return (
-    <div
-      className={`text-lg header-container flex items-center px-4 py-6 bg-blue-400 ${
+    <header
+      className={`text-lg header-container flex items-center px-4 py-4 bg-blue-400 sticky top-0 left-0 right-0 ${
         showSearch ? "justify-end" : "justify-between"
       }`}
     >
       {!showSearch && (
-        <div className="flex-left">
+        <div id="flex-left">
           <Link to="/">Home</Link>
         </div>
       )}
-      <div className="flex-right flex gap-4">
+      <div id="flex-right" className={`flex gap-4 items-center ${showSearch && "w-full"}`}>
         {!showSearch && <Login user={user} setUser={setUser} inHeader={inHeader} />}
-        {user && (
+        {user && !showSearch && (
           <Link to="/favorites" state={user}>
             Favorites
           </Link>
@@ -32,7 +32,7 @@ const Header = ({ user, setUser, inHeader }: UserProps) => {
           {!showSearch ? <FaMagnifyingGlass /> : <IoCloseCircleSharp />}
         </button>
       </div>
-    </div>
+    </header>
   );
 };
 

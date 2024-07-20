@@ -2,7 +2,9 @@ import { useState } from "react";
 import axios from "axios";
 import { useGoogleLogin } from "@react-oauth/google";
 import { UserProps } from "../types/userProps";
+import { IconContext } from "react-icons";
 import { FcGoogle } from "react-icons/fc";
+import { BsTriangleFill } from "react-icons/bs";
 
 const Login = ({ user, setUser, inHeader = false }: UserProps) => {
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
@@ -19,7 +21,6 @@ const Login = ({ user, setUser, inHeader = false }: UserProps) => {
           });
           setUser(res.data);
           // Handle the response from the backend
-          alert(`Welcome ${res.data.given_name} at ${res.data.email}`);
         } catch (error) {
           console.error("Error logging in.", error);
           if (axios.isAxiosError(error)) {
@@ -38,23 +39,42 @@ const Login = ({ user, setUser, inHeader = false }: UserProps) => {
 
   const handleLogout = () => {
     setUser(null);
+    setIsOptionsOpen(false);
   };
 
   return (
     <>
       {user ? (
-        <div>
+        <>
           {inHeader && (
-            <button className="" onClick={() => setIsOptionsOpen(!isOptionsOpen)}>
-              {user.given_name}
+            <button
+              id="open-user-options"
+              className="flex gap-1"
+              onClick={() => setIsOptionsOpen(!isOptionsOpen)}
+            >
+              <img className="w-10 rounded-full" src={user.picture} alt={user.given_name} />
+              <IconContext.Provider
+                value={{
+                  color: "white",
+                  className: `m-auto w-3 transition duration-300 ease-in-out ${
+                    isOptionsOpen ? "rotate-180" : "rotate-0"
+                  }`,
+                }}
+              >
+                <BsTriangleFill />
+              </IconContext.Provider>
             </button>
           )}
-          {isOptionsOpen && (
-            <div className="user-options text-white absolute bg-black bg-opacity-40 p-2 rounded-md">
-              <button onClick={handleLogout}>Log out</button>
-            </div>
-          )}
-        </div>
+          <div
+            id="user-options"
+            className={`text-white absolute bg-black p-2 rounded-md top-16 transition-all ${
+              isOptionsOpen ? "bg-opacity-40 opacity-1 visible" : "bg-opacity-0 opacity-0 invisible"
+            }`}
+          >
+            <p>{user.given_name}</p>
+            <button onClick={handleLogout}>Log out</button>
+          </div>
+        </>
       ) : (
         <button className="flex items-center gap-2" onClick={() => handleLogin()}>
           <FcGoogle />
