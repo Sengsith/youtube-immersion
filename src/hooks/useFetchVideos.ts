@@ -81,33 +81,34 @@ const useFetchVideos = () => {
       const url = BASE_VIDEOS_URL + params;
       const response = await fetch(url);
       const data = await response.json();
-      console.log("url:", url);
 
-      console.log("data:", data);
+      // Array of IDs for channel thumbnail API call
+      const channelIds = data.items.map((item: any) => item.snippet.channelId);
+      const uniqueChannelIds = Array.from(new Set(channelIds));
 
-      // Promise.all for the async inside our map function
-      // Need to get channel thumbnails because it is a different API call
-      const videos = await Promise.all(
-        data.items?.map(async (item: any) => {
-          // Channels.list API call
-          const CHANNEL_URL = `https://youtube.googleapis.com/youtube/v3/channels?part=snippet&id=${
-            item.snippet.channelId
-          }&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`;
-          const response = await fetch(CHANNEL_URL);
-          const channelData = await response.json();
+      // channels.list api call
+      const CHANNEL_URL = `https://youtube.googleapis.com/youtube/v3/channels?part=snippet&id=${uniqueChannelIds.join(
+        ","
+      )}&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`;
+      const channelResponse = await fetch(CHANNEL_URL);
+      const channelData = await channelResponse.json();
 
-          return {
-            id: item.id,
-            publishedAt: formatPublishedDate(item.snippet.publishedAt),
-            title: item.snippet.title,
-            thumbnail: item.snippet.thumbnails.default,
-            channelThumbnail: channelData.items[0].snippet.thumbnails.default,
-            channelTitle: item.snippet.channelTitle,
-            duration: formatDuration(item.contentDetails.duration),
-            viewCount: formatViews(item.statistics.viewCount),
-          };
-        })
-      );
+      // Reduce unique channel ids to a key,value pair (id, thumbnail)
+      const channelThumbnails = channelData.items.reduce((acc: any, channel: any) => {
+        acc[channel.id] = channel.snippet.thumbnails.high || channel.snippet.thumbnails.medium;
+        return acc;
+      }, {});
+
+      const videos = data.items?.map((item: any) => ({
+        id: item.id,
+        publishedAt: formatPublishedDate(item.snippet.publishedAt),
+        title: item.snippet.title,
+        thumbnail: item.snippet.thumbnails.maxres || item.snippet.thumbnails.standard,
+        channelThumbnail: channelThumbnails[item.snippet.channelId],
+        channelTitle: item.snippet.channelTitle || "Unknown Channel",
+        duration: formatDuration(item.contentDetails.duration || "PT0S"),
+        viewCount: formatViews(item.statistics.viewCount || "0"),
+      }));
 
       if (IDs) {
         setSearchedData(videos);

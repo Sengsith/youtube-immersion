@@ -6,7 +6,7 @@ import useFavorites from "../hooks/useFavorites";
 import usePaginate from "../hooks/usePaginate";
 import Thumbnail from "../components/Thumbnail";
 import Login from "../components/Login";
-import Paginate from "../components/Paginate";
+// import Paginate from "../components/Paginate";
 
 const FavoritesPage = () => {
   const context = useOutletContext<UserProps | null>();
@@ -16,10 +16,10 @@ const FavoritesPage = () => {
 
   const { searchedData, loading, error, getVideos } = useFetchVideos();
 
-  const { currentItems, pageCount, handlePageClick } = usePaginate({
-    items: searchedData,
-    itemsPerPage: 5,
-  });
+  // const { currentItems, pageCount, handlePageClick } = usePaginate({
+  //   items: searchedData,
+  //   itemsPerPage: 5,
+  // });
 
   useEffect(() => {
     if (user) {
@@ -53,9 +53,9 @@ const FavoritesPage = () => {
     <div>
       {loading && <div>Loading Favorites...</div>}
       {error && <div>{error}</div>}
-      <h2>{user ? `${user.given_name}'s ` : ""}FavoritesPage</h2>
+      <h2 className="mb-4">{user ? `${user.given_name}'s ` : ""}favorite videos</h2>
       <div className="favorite-video-list">
-        {currentItems?.map((video) => (
+        {searchedData?.map((video) => (
           <div className="favorite-item" key={video.id}>
             <Thumbnail video={video} />
             <button
@@ -68,7 +68,7 @@ const FavoritesPage = () => {
           </div>
         ))}
       </div>
-      <Paginate pageCount={pageCount} handlePageClick={handlePageClick} />
+      {/* <Paginate pageCount={pageCount} handlePageClick={handlePageClick} /> */}
     </div>
   );
 };
