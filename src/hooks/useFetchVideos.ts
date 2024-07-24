@@ -134,7 +134,15 @@ const useFetchVideos = () => {
     }
   };
 
-  return { trendingResults, setTrendingResults, searchedData, loading, error, getVideos };
+  return {
+    trendingResults,
+    setTrendingResults,
+    searchedData,
+    setSearchedData,
+    loading,
+    error,
+    getVideos,
+  };
 };
 
 export default useFetchVideos;

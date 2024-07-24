@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import useFetchSearch from "../hooks/useFetchSearch";
 import useFetchVideos from "../hooks/useFetchVideos";
 import useQuery from "../hooks/useQuery";
+import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import Thumbnail from "../components/Thumbnail";
 
 const SearchPage = () => {
@@ -17,7 +18,13 @@ const SearchPage = () => {
   } = useFetchSearch();
 
   // Variables for actual video stats and data
-  const { searchedData, loading: videoLoading, error: videoError, getVideos } = useFetchVideos();
+  const {
+    searchedData,
+    setSearchedData,
+    loading: videoLoading,
+    error: videoError,
+    getVideos,
+  } = useFetchVideos();
 
   useEffect(() => {
     // Ignore empty input queries
@@ -33,12 +40,13 @@ const SearchPage = () => {
     }
   }, [searchResults]);
 
+  useInfiniteScroll(searchedData, setSearchedData);
+
   return (
     <div className="search-page">
       {(searchLoading || videoLoading) && <div>Loading...</div>}
       {searchError && <div>{searchError}</div>}
       {videoError && <div>{videoError}</div>}
-      <h2>Search Results</h2>
       <div className="search-results-list">
         {searchedData?.map((video) => (
           <Thumbnail key={video.id} video={video} />
