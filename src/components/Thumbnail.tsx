@@ -5,7 +5,7 @@ const Thumbnail = ({ video }: { video: Video }) => {
   return (
     <div className="trending-video-thumbnail flex flex-col gap-2 mb-4">
       <Link className="relative" to={`/watch?v=${video.id}`} state={{ video }}>
-        <img className="w-full rounded-md" src={video.thumbnail.url} alt={video.title} />
+        <img className="w-full rounded-md" src={video.thumbnail?.url} alt={video.title} />
         <p className="video-duration absolute bottom-2 right-2 bg-black bg-opacity-70 px-2 py-1 rounded-md">
           {video.duration}
         </p>

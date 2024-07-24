@@ -3,9 +3,9 @@ import { useLocation, useOutletContext } from "react-router-dom";
 import Youtube, { YouTubeEvent, YouTubePlayer } from "react-youtube";
 import Transcript from "../components/Transcript";
 import { UserProps } from "../types/userProps";
+import { Video } from "../types/video";
 import useQuery from "../hooks/useQuery";
 import useFetchVideos from "../hooks/useFetchVideos";
-import { Video } from "../types/video";
 import useFavorites from "../hooks/useFavorites";
 
 const WatchPage = () => {
@@ -41,7 +41,7 @@ const WatchPage = () => {
     }
   }, [user]);
 
-  const { title, channelTitle, channelThumbnail, viewCount, duration, publishedAt } =
+  const { title, channelTitle, channelThumbnail, viewCount, publishedAt } =
     video || searchedData[0] || {};
 
   if (!video && searchedData.length === 0 && !loading) {
@@ -65,14 +65,19 @@ const WatchPage = () => {
     <>
       {loading && <div>Loading WatchPage...</div>}
       {error && <div>Sorry! {error}</div>}
-      <h2>{title}</h2>
       <Youtube videoId={videoId} onReady={onReady} opts={{ width: "420", height: "315" }} />
       <div className="video-details">
-        <img src={channelThumbnail.url} alt={channelTitle} />
-        <h3>{channelTitle}</h3>
-        <p>{viewCount}</p>
-        <p>{duration}</p>
-        <p>{publishedAt}</p>
+        <div className="thumbnail-channel flex gap-2 items-center">
+          <img
+            className="rounded-full w-10 self-center"
+            src={channelThumbnail.url}
+            alt={channelTitle}
+          />
+          <p className="video-channel text-sm">{channelTitle}</p>
+        </div>
+        <h3 className="video-title">{title}</h3>
+        <p className="video-views">{viewCount}</p>
+        <p className="video-published">{publishedAt}</p>
       </div>
       <button className="favorite-video-btn cursor-pointer" onClick={handleClickFavorite}>
         {isFavorite ? <p>Unfavorite</p> : <p>Favorite</p>}

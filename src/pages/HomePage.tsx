@@ -12,7 +12,7 @@ const HomePage = () => {
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
+    const handleInfiniteScroll = () => {
       if (!trendingResults || loadingRef.current) return;
       if (
         window.innerHeight + document.documentElement.scrollTop !==
@@ -36,8 +36,8 @@ const HomePage = () => {
       loadingRef.current = false;
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleInfiniteScroll);
+    return () => window.removeEventListener("scroll", handleInfiniteScroll);
   }, [trendingResults]);
 
   return (

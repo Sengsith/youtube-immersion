@@ -103,12 +103,23 @@ const useFetchVideos = () => {
         id: item.id,
         publishedAt: formatPublishedDate(item.snippet.publishedAt),
         title: item.snippet.title,
-        thumbnail: item.snippet.thumbnails.maxres || item.snippet.thumbnails.standard,
-        channelThumbnail: channelThumbnails[item.snippet.channelId],
+        thumbnail: item.snippet.thumbnails.maxres ||
+          item.snippet.thumbnails.standard || {
+            url: "https://via.placeholder.com/1280x720",
+            height: 720,
+            width: 1280,
+          },
+        channelThumbnail: channelThumbnails[item.snippet.channelId] || {
+          url: "https://via.placeholder.com/800x800",
+          height: 800,
+          width: 800,
+        },
         channelTitle: item.snippet.channelTitle || "Unknown Channel",
         duration: formatDuration(item.contentDetails.duration || "PT0S"),
         viewCount: formatViews(item.statistics.viewCount || "0"),
       }));
+
+      console.log(videos);
 
       if (IDs) {
         setSearchedData(videos);
