@@ -20,9 +20,10 @@ const Search = () => {
     <div id="search-bar-container" className="flex items-center grow">
       <form id="search-form" onSubmit={handleSubmit} className="flex items-center grow">
         <input
-          className="grow"
+          className="grow pl-2 py-1.5 border-transparent"
           type="text"
           value={searchQuery}
+          placeholder="Search"
           onChange={(e) => setSearchQuery(e.target.value)}
         />
         <button className="ml-4" type="submit">

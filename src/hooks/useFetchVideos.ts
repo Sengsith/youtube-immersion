@@ -123,7 +123,7 @@ const useFetchVideos = () => {
     }
   };
 
-  return { trendingResults, searchedData, loading, error, getVideos };
+  return { trendingResults, setTrendingResults, searchedData, loading, error, getVideos };
 };
 
 export default useFetchVideos;
