@@ -65,7 +65,7 @@ const WatchPage = () => {
     <>
       {loading && <div>Loading WatchPage...</div>}
       {error && <div>Sorry! {error}</div>}
-      <Youtube videoId={videoId} onReady={onReady} opts={{ width: "420", height: "315" }} />
+      <Youtube videoId={videoId} onReady={onReady} opts={{ width: "100%", height: "315" }} />
       <div className="video-details">
         <div className="thumbnail-channel flex gap-2 items-center">
           <img
