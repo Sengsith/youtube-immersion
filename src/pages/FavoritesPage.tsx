@@ -5,6 +5,7 @@ import useFetchVideos from "../hooks/useFetchVideos";
 import useFavorites from "../hooks/useFavorites";
 import Thumbnail from "../components/Thumbnail";
 import Login from "../components/Login";
+import { FavoriteIcon, UnfavoriteIcon } from "../components/FavoriteIcons";
 
 const FavoritesPage = () => {
   const context = useOutletContext<UserProps | null>();
@@ -46,17 +47,22 @@ const FavoritesPage = () => {
     <div>
       {loading && <div>Loading Favorites...</div>}
       {error && <div>{error}</div>}
-      <h2 className="mb-4">{user ? `${user.given_name}'s ` : ""}favorite videos</h2>
+      <h2 className="mb-4 px-4 py-4 text-lg font-bold">
+        {user ? `${user.given_name}'s ` : ""}favorite videos
+      </h2>
       <div className="favorite-video-list">
         {searchedData?.map((video) => (
           <div className="favorite-item" key={video.id}>
             <Thumbnail video={video} />
             <button
-              className="unfavorite-video-btn cursor-pointer"
+              className="unfavorite-video-btn cursor-pointer flex items-center gap-1 px-4 mb-4 -mt-7"
               onClick={handleClickUnfavorite}
               id={`unfavorite-btn-${video.id}`}
             >
-              Unfavorite
+              <div className="w-4 h-4">
+                <FavoriteIcon isVisible={true} />
+              </div>
+              <p>Unfavorite</p>
             </button>
           </div>
         ))}
