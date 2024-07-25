@@ -32,7 +32,7 @@ const Layout = () => {
   return (
     <>
       <Header user={user} setUser={setUser} inHeader={true} />
-      <main id="outlet" className="bg-zinc-900 text-white">
+      <main id="outlet">
         <Outlet context={shouldPassProps ? { user, setUser } : null} />
       </main>
     </>
