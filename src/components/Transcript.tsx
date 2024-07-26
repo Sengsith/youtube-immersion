@@ -18,17 +18,19 @@ const Transcript = ({
   };
 
   return (
-    <div className="transcript-container">
-      <h3>Transcript</h3>
+    <div className="transcript-container border-double border-4 border-blue-300 p-4 overflow-y-scroll flex-grow">
+      <h3 className="mb-2">Transcript</h3>
       {loading && <div>Loading...</div>}
       {error && <div>So sorry, unable to get transcript!</div>}
       {transcript && (
-        <div>
+        <div className="flex flex-col gap-2">
           {transcript.map((line, index) => (
-            <p key={index} onClick={() => handleLineClick(line.offset)}>
-              {line.timestamp}
-              <span>{line.text}</span>
-            </p>
+            <div key={index} onClick={() => handleLineClick(line.offset)}>
+              <p className="text-lg">
+                {line.timestamp} {line.text}
+              </p>
+              <hr></hr>
+            </div>
           ))}
         </div>
       )}

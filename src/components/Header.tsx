@@ -11,7 +11,7 @@ const Header = ({ user, setUser, inHeader }: UserProps) => {
 
   return (
     <header
-      className={`text-lg header-container flex items-center px-4 py-2 bg-blue-400 sticky z-10 top-0 left-0 right-0 ${
+      className={`text-lg header-container flex items-center px-4 py-2 bg-blue-400 sticky z-10 top-0 left-0 right-0 h-14 ${
         showSearch ? "justify-end" : "justify-between"
       }`}
     >
