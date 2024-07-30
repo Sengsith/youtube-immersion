@@ -67,8 +67,8 @@ const Login = ({ user, setUser, inHeader = false }: UserProps) => {
           )}
           <div
             id="user-options"
-            className={`text-white absolute bg-black p-2 rounded-md top-16 transition-all ${
-              isOptionsOpen ? "bg-opacity-40 opacity-1 visible" : "bg-opacity-0 opacity-0 invisible"
+            className={`text-white absolute bg-black p-2 rounded-md top-16 transition-all border-2 border-blue-500 ${
+              isOptionsOpen ? "bg-opacity-80 opacity-1 visible" : "bg-opacity-0 opacity-0 invisible"
             }`}
           >
             <p>{user.given_name}</p>

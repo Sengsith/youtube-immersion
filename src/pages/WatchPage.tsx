@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLocation, useOutletContext } from "react-router-dom";
 import Youtube, { YouTubeEvent, YouTubePlayer } from "react-youtube";
 import Transcript from "../components/Transcript";
@@ -15,7 +15,11 @@ const WatchPage = () => {
   const location = useLocation();
   const video: Video = location.state?.video;
   const { searchedData, loading, error, getVideos } = useFetchVideos();
+
+  // Player
   const [player, setPlayer] = useState<YouTubePlayer | null>(null);
+  const [currentTime, setCurrentTime] = useState<number>(0);
+  const intervalRef = useRef<number | null>(null);
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
 
   const context = useOutletContext<UserProps | null>();
@@ -32,6 +36,8 @@ const WatchPage = () => {
     if (app) app.classList.remove("pb-4");
     return () => {
       if (app) app.classList.add("pb-4");
+
+      stopTrackingTime();
     };
   }, []);
 
@@ -65,6 +71,27 @@ const WatchPage = () => {
     setPlayer(event.target);
   };
 
+  const onStateChange = (event: { data: number }) => {
+    if (event.data === 1) {
+      // 1 correspondes to YT.PlayerState.PLAYING
+      startTrackingTime();
+    } else {
+      stopTrackingTime();
+    }
+  };
+
+  const startTrackingTime = () => {
+    if (!player) return;
+    intervalRef.current = window.setInterval(async () => {
+      setCurrentTime(await player.getCurrentTime());
+    }, 1000);
+  };
+
+  const stopTrackingTime = () => {
+    if (!intervalRef.current) return;
+    clearInterval(intervalRef.current);
+  };
+
   const handleClickFavorite = async () => {
     if (!user) {
       alert("Please login to favorite a video!");
@@ -81,7 +108,8 @@ const WatchPage = () => {
       <Youtube
         videoId={videoId}
         onReady={onReady}
-        opts={{ width: "100%", height: "315" }}
+        onStateChange={onStateChange}
+        opts={{ width: "100%", height: "315", playerVars: { controls: 1 } }}
         style={{ marginBottom: "1rem" }}
       />
       <div id="video-details-container" className="flex flex-col overflow-y-hidden">
@@ -108,7 +136,7 @@ const WatchPage = () => {
             {isFavorite ? <p>Unfavorite</p> : <p>Favorite</p>}
           </button>
         </div>
-        <Transcript videoId={videoId ?? ""} player={player} />
+        <Transcript videoId={videoId ?? ""} player={player} currentTime={currentTime} />
       </div>
     </div>
   );
