@@ -8,6 +8,7 @@ import { Video } from "../types/video";
 import useQuery from "../hooks/useQuery";
 import useFetchVideos from "../hooks/useFetchVideos";
 import useFavorites from "../hooks/useFavorites";
+import { FaArrowCircleRight } from "react-icons/fa";
 
 const WatchPage = () => {
   const query = useQuery();
@@ -15,6 +16,8 @@ const WatchPage = () => {
   const location = useLocation();
   const video: Video = location.state?.video;
   const { searchedData, loading, error, getVideos } = useFetchVideos();
+  const [showTranscript, setShowTranscript] = useState<boolean>(false);
+  const [showDetails, setShowDetails] = useState<boolean>(true);
 
   // Player
   const [player, setPlayer] = useState<YouTubePlayer | null>(null);
@@ -102,7 +105,7 @@ const WatchPage = () => {
   };
 
   return (
-    <div id="watch-page-container" className="flex flex-col h-[calc(100vh-56px)] overlfow-hidden">
+    <div id="watch-page-container" className="flex flex-col overflow-hidden h-[calc(100vh-56px)]">
       {loading && <div>Loading WatchPage...</div>}
       {error && <div>Sorry! {error}</div>}
       <Youtube
@@ -112,31 +115,50 @@ const WatchPage = () => {
         opts={{ width: "100%", height: "315", playerVars: { controls: 1 } }}
         style={{ marginBottom: "1rem" }}
       />
-      <div id="video-details-container" className="flex flex-col overflow-y-hidden">
-        <div id="video-details" className="flex flex-col items-start gap-1 px-4 mb-4">
-          <h3 className="video-title font-bold text-lg">{title}</h3>
-          <p className={`video-views ${smallVideoDetails}`}>{viewCount}</p>
-          <p className={`video-published ${smallVideoDetails}`}>{publishedAt}</p>
-          <div className="thumbnail-channel flex gap-2 items-center">
-            <img
-              className="rounded-full w-10 self-center"
-              src={channelThumbnail.url}
-              alt={channelTitle}
-            />
-            <p className={`video-channel ${smallVideoDetails}`}>{channelTitle}</p>
-          </div>
-          <button
-            className="favorite-video-btn cursor-pointer flex items-center gap-1"
-            onClick={handleClickFavorite}
-          >
-            <div className="favorite-icons relative w-4 h-4">
-              <FavoriteIcon isVisible={isFavorite} />
-              <UnfavoriteIcon isVisible={isFavorite} />
+      <div id="video-details-container" className="flex flex-col flex-grow overflow-y-hidden">
+        {showDetails && (
+          <div id="video-details" className="flex flex-col items-start gap-2 px-4 mb-4">
+            <h3 className="video-title font-bold text-lg">{title}</h3>
+            <p className={`video-views ${smallVideoDetails}`}>{viewCount}</p>
+            <p className={`video-published ${smallVideoDetails}`}>{publishedAt}</p>
+            <div className="thumbnail-channel flex gap-2 items-center">
+              <img
+                className="rounded-full w-10 self-center"
+                src={channelThumbnail.url}
+                alt={channelTitle}
+              />
+              <p className={`video-channel ${smallVideoDetails}`}>{channelTitle}</p>
             </div>
-            {isFavorite ? <p>Unfavorite</p> : <p>Favorite</p>}
-          </button>
-        </div>
-        <Transcript videoId={videoId ?? ""} player={player} currentTime={currentTime} />
+            <button
+              className="favorite-video-btn cursor-pointer flex items-center gap-1"
+              onClick={handleClickFavorite}
+            >
+              <div className="favorite-icons relative w-4 h-4">
+                <FavoriteIcon isVisible={isFavorite} />
+                <UnfavoriteIcon isVisible={isFavorite} />
+              </div>
+              {isFavorite ? <p>Unfavorite</p> : <p>Favorite</p>}
+            </button>
+            <button
+              className="flex items-center gap-4 text-xl"
+              onClick={() => {
+                setShowTranscript(true);
+                setShowDetails(false);
+              }}
+            >
+              <p>Transcript</p>
+              <FaArrowCircleRight />
+            </button>
+          </div>
+        )}
+        <Transcript
+          videoId={videoId ?? ""}
+          player={player}
+          currentTime={currentTime}
+          showTranscript={showTranscript}
+          setShowTranscript={setShowTranscript}
+          setShowDetails={setShowDetails}
+        />
       </div>
     </div>
   );
