@@ -10,21 +10,10 @@ const SearchPage = () => {
   const searchQuery = query.get("search_query") || "";
 
   // Variables for videoID from a search query
-  const {
-    searchResults,
-    loading: searchLoading,
-    error: searchError,
-    getSearchData,
-  } = useFetchSearch();
+  const { searchResults, loading: searchLoading, error: searchError, getSearchData } = useFetchSearch();
 
   // Variables for actual video stats and data
-  const {
-    searchedData,
-    setSearchedData,
-    loading: videoLoading,
-    error: videoError,
-    getVideos,
-  } = useFetchVideos();
+  const { searchedData, setSearchedData, loading: videoLoading, error: videoError, getVideos } = useFetchVideos();
 
   useEffect(() => {
     // Ignore empty input queries
@@ -43,16 +32,16 @@ const SearchPage = () => {
   useInfiniteScroll(searchedData, setSearchedData);
 
   return (
-    <div className="search-page">
+    <>
       {(searchLoading || videoLoading) && <div>Loading...</div>}
       {searchError && <div>{searchError}</div>}
       {videoError && <div>{videoError}</div>}
-      <div className="search-results-list">
+      <div id="searc-results-list" className="grid gap-x-4 grid-cols-auto-fit-20rem">
         {searchedData?.map((video) => (
           <Thumbnail key={video.id} video={video} />
         ))}
       </div>
-    </div>
+    </>
   );
 };
 

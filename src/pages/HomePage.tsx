@@ -16,7 +16,7 @@ const HomePage = () => {
     <>
       {loading && <div>Loading Trending...</div>}
       {error && <div>{error}|</div>}
-      <div className="trending-video-list">
+      <div id="trending-video-list" className="grid gap-x-4 grid-cols-auto-fit-20rem">
         {trendingResults?.map((video) => (
           <Thumbnail key={video.id} video={video} />
         ))}

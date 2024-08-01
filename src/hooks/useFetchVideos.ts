@@ -12,8 +12,7 @@ const useFetchVideos = () => {
     if (duration === "P0D" || duration === "PT0S") {
       return "LIVE";
     }
-    const regex =
-      /P(?:([\d.]+)Y)?(?:([\d.]+)M)?(?:([\d.]+)W)?(?:([\d.]+)D)?T(?:([\d.]+)H)?(?:([\d.]+)M)?(?:([\d.]+)S)?/;
+    const regex = /P(?:([\d.]+)Y)?(?:([\d.]+)M)?(?:([\d.]+)W)?(?:([\d.]+)D)?T(?:([\d.]+)H)?(?:([\d.]+)M)?(?:([\d.]+)S)?/;
     const matches = duration.match(regex);
 
     if (!matches) {
@@ -75,21 +74,19 @@ const useFetchVideos = () => {
       const key = `key=${import.meta.env.VITE_YOUTUBE_API_KEY}`;
       // Trending page requires chart param
       // Search page requires IDs, doesn't need chart or regionCode
-      const params = videoIds
-        ? part + IDs + regionCode + maxResults + key
-        : part + chart + regionCode + maxResults + key;
+      const params = videoIds ? part + IDs + regionCode + maxResults + key : part + chart + regionCode + maxResults + key;
       const url = BASE_VIDEOS_URL + params;
       const response = await fetch(url);
       const data = await response.json();
+
+      console.log("data:", data);
 
       // Array of IDs for channel thumbnail API call
       const channelIds = data.items.map((item: any) => item.snippet.channelId);
       const uniqueChannelIds = Array.from(new Set(channelIds));
 
       // channels.list api call
-      const CHANNEL_URL = `https://youtube.googleapis.com/youtube/v3/channels?part=snippet&id=${uniqueChannelIds.join(
-        ","
-      )}&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`;
+      const CHANNEL_URL = `https://youtube.googleapis.com/youtube/v3/channels?part=snippet&id=${uniqueChannelIds.join(",")}&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`;
       const channelResponse = await fetch(CHANNEL_URL);
       const channelData = await channelResponse.json();
 
@@ -104,7 +101,7 @@ const useFetchVideos = () => {
         publishedAt: formatPublishedDate(item.snippet.publishedAt),
         title: item.snippet.title,
         thumbnail: item.snippet.thumbnails.maxres ||
-          item.snippet.thumbnails.standard || {
+          item.snippet.thumbnails.medium || {
             url: "https://via.placeholder.com/1280x720",
             height: 720,
             width: 1280,
@@ -119,7 +116,7 @@ const useFetchVideos = () => {
         viewCount: formatViews(item.statistics.viewCount || "0"),
       }));
 
-      console.log(videos);
+      console.log("videos:", videos);
 
       if (IDs) {
         setSearchedData(videos);
