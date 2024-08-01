@@ -5,6 +5,7 @@ export default {
     extend: {
       translate: {
         "30rem": "480px",
+        "35rem": "560px",
       },
     },
     fontFamily: {
