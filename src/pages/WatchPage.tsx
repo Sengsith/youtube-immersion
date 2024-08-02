@@ -37,6 +37,11 @@ const WatchPage = () => {
   useEffect(() => {
     const app = document.querySelector("#app");
     if (app) app.classList.remove("pb-4");
+
+    // Youtube Iframe styling
+    const youtubeIframe = document.getElementById("youtube-iframe");
+    youtubeIframe?.classList.add("w-full", "h-full", "absolute");
+
     return () => {
       if (app) app.classList.add("pb-4");
 
@@ -109,11 +114,13 @@ const WatchPage = () => {
       {loading && <div>Loading WatchPage...</div>}
       {error && <div>Sorry! {error}</div>}
       <Youtube
+        id="youtube-iframe"
         videoId={videoId}
         onReady={onReady}
         onStateChange={onStateChange}
-        opts={{ width: "100%", height: "315", playerVars: { controls: 1 } }}
+        opts={{ playerVars: { controls: 1 } }}
         style={{ marginBottom: "1rem" }}
+        className="relative pb-56.25% w-full"
       />
       <div id="video-details-container" className="flex flex-col flex-grow overflow-y-hidden">
         {showDetails && (

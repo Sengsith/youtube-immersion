@@ -21,7 +21,7 @@ const Transcript = ({
   const { transcript, loading, error } = useFetchTranscript(videoId);
 
   // Styling
-  const toggleOff = "-translate-x-[30rem]";
+  const toggleOff = "-translate-x-[100%]";
   const toggleOn = "translate-x-0";
 
   const handleLineClick = (offset: number) => {
@@ -67,9 +67,7 @@ const Transcript = ({
   return (
     <div
       id="transcript-container"
-      className={`border-double border-4 flex-grow border-blue-300 bg-zinc-900 p-4 relative overflow-y-hidden transition-transform duration-300 ease-in-out ${
-        showTranscript ? toggleOn : toggleOff
-      }`}
+      className={`border-double border-4 flex-grow border-blue-300 bg-zinc-900 p-4 relative overflow-y-hidden transition-transform duration-300 ease-in-out ${showTranscript ? toggleOn : toggleOff}`}
     >
       <div className="heading flex justify-between items-center mb-2">
         <h3>Transcript</h3>
@@ -90,12 +88,7 @@ const Transcript = ({
       {transcript && (
         <div id="lines" className="flex flex-col gap-2 overflow-y-scroll h-full">
           {transcript.map((line, index) => (
-            <div
-              id={`line-${index}`}
-              className="scroll-mt-16 cursor-pointer"
-              key={index}
-              onClick={() => handleLineClick(line.offset)}
-            >
+            <div id={`line-${index}`} className="scroll-mt-16 cursor-pointer" key={index} onClick={() => handleLineClick(line.offset)}>
               <p className="text-lg">
                 <span className="text-gray-400 mr-2">{line.timestamp}</span> {line.text}
               </p>
