@@ -3,6 +3,9 @@ export default {
   content: ["../index.html", "./src/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      width: {
+        "35%": "35%",
+      },
       translate: {
         "30rem": "480px",
         "35rem": "560px",

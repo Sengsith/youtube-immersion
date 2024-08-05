@@ -110,7 +110,10 @@ const WatchPage = () => {
   };
 
   return (
-    <div id="watch-page-container" className="flex flex-col overflow-hidden h-[calc(100vh-56px)]">
+    <div
+      id="watch-page-container"
+      className="flex flex-col overflow-hidden h-[calc(100vh-56px)] lg:flex-row"
+    >
       {loading && <div>Loading WatchPage...</div>}
       {error && <div>Sorry! {error}</div>}
       <Youtube
@@ -119,10 +122,14 @@ const WatchPage = () => {
         onReady={onReady}
         onStateChange={onStateChange}
         opts={{ playerVars: { controls: 1 } }}
-        style={{ marginBottom: "1rem" }}
-        className="relative pb-56.25% w-full"
+        className="relative pb-[min(56.25%,100vh-56px)] w-full"
       />
-      <div id="video-details-container" className="flex flex-col flex-grow overflow-y-hidden">
+      <div
+        id="video-details-container"
+        className={`flex flex-col flex-grow overflow-y-hidden mt-4 lg:w-[35%] ${
+          showTranscript && "md:mt-0"
+        }`}
+      >
         {showDetails && (
           <div id="video-details" className="flex flex-col items-start gap-2 px-4 mb-4">
             <h3 className="video-title font-bold text-lg">{title}</h3>
