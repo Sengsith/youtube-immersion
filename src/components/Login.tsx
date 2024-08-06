@@ -28,11 +28,11 @@ const Login = ({ user, setUser, inHeader = false }: UserProps) => {
           }
         }
       } else {
-        console.log("No credentials returned");
+        console.error("No credentials returned");
       }
     },
     onError: () => {
-      console.log("Login failed");
+      console.error("Login failed");
     },
     scope: "profile email https://www.googleapis.com/auth/youtube.force-ssl",
   });
@@ -47,12 +47,18 @@ const Login = ({ user, setUser, inHeader = false }: UserProps) => {
       {user ? (
         <>
           {inHeader && (
-            <button id="open-user-options" className="flex gap-1" onClick={() => setIsOptionsOpen(!isOptionsOpen)}>
+            <button
+              id="open-user-options"
+              className="flex gap-1"
+              onClick={() => setIsOptionsOpen(!isOptionsOpen)}
+            >
               <img className="w-10 rounded-full" src={user.picture} alt={user.given_name} />
               <IconContext.Provider
                 value={{
                   color: "white",
-                  className: `m-auto w-3 transition duration-300 ease-in-out ${isOptionsOpen ? "rotate-180" : "rotate-0"}`,
+                  className: `m-auto w-3 transition duration-300 ease-in-out ${
+                    isOptionsOpen ? "rotate-180" : "rotate-0"
+                  }`,
                 }}
               >
                 <BsTriangleFill />

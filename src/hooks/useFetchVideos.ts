@@ -12,7 +12,8 @@ const useFetchVideos = () => {
     if (duration === "P0D" || duration === "PT0S") {
       return "LIVE";
     }
-    const regex = /P(?:([\d.]+)Y)?(?:([\d.]+)M)?(?:([\d.]+)W)?(?:([\d.]+)D)?T(?:([\d.]+)H)?(?:([\d.]+)M)?(?:([\d.]+)S)?/;
+    const regex =
+      /P(?:([\d.]+)Y)?(?:([\d.]+)M)?(?:([\d.]+)W)?(?:([\d.]+)D)?T(?:([\d.]+)H)?(?:([\d.]+)M)?(?:([\d.]+)S)?/;
     const matches = duration.match(regex);
 
     if (!matches) {
@@ -49,10 +50,7 @@ const useFetchVideos = () => {
 
   const getVideos = async (videoIds?: string | string[]) => {
     // Return if videoIds was passed in but empty
-    if (videoIds === null || videoIds?.length === 0) {
-      console.log("No video IDs passed in or videoIds array is empty");
-      return;
-    }
+    if (videoIds === null || videoIds?.length === 0) return;
     try {
       setLoading(true);
       const BASE_VIDEOS_URL = "https://youtube.googleapis.com/youtube/v3/videos?";
@@ -74,19 +72,21 @@ const useFetchVideos = () => {
       const key = `key=${import.meta.env.VITE_YOUTUBE_API_KEY}`;
       // Trending page requires chart param
       // Search page requires IDs, doesn't need chart or regionCode
-      const params = videoIds ? part + IDs + regionCode + maxResults + key : part + chart + regionCode + maxResults + key;
+      const params = videoIds
+        ? part + IDs + regionCode + maxResults + key
+        : part + chart + regionCode + maxResults + key;
       const url = BASE_VIDEOS_URL + params;
       const response = await fetch(url);
       const data = await response.json();
-
-      console.log("data:", data);
 
       // Array of IDs for channel thumbnail API call
       const channelIds = data.items.map((item: any) => item.snippet.channelId);
       const uniqueChannelIds = Array.from(new Set(channelIds));
 
       // channels.list api call
-      const CHANNEL_URL = `https://youtube.googleapis.com/youtube/v3/channels?part=snippet&id=${uniqueChannelIds.join(",")}&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`;
+      const CHANNEL_URL = `https://youtube.googleapis.com/youtube/v3/channels?part=snippet&id=${uniqueChannelIds.join(
+        ","
+      )}&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`;
       const channelResponse = await fetch(CHANNEL_URL);
       const channelData = await channelResponse.json();
 
@@ -115,8 +115,6 @@ const useFetchVideos = () => {
         duration: formatDuration(item.contentDetails.duration || "PT0S"),
         viewCount: formatViews(item.statistics.viewCount || "0"),
       }));
-
-      console.log("videos:", videos);
 
       if (IDs) {
         setSearchedData(videos);

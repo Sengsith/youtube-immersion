@@ -6,14 +6,10 @@ const useFetchSearch = () => {
   const [error, setError] = useState<string | null>(null);
 
   const getSearchData = async (query: string | undefined) => {
-    if (!query) {
-      console.log("No query was passed into getSearchData.");
-      return;
-    }
+    if (!query) return;
 
     try {
       setLoading(true);
-      console.log("query:", query);
       const BASE_URL = "https://youtube.googleapis.com/youtube/v3/search?";
       const part = "part=snippet&";
       const maxResults = "maxResults=15&";
@@ -24,11 +20,9 @@ const useFetchSearch = () => {
       const key = `key=${import.meta.env.VITE_YOUTUBE_API_KEY}`;
       const params = part + maxResults + q + regionCode + relevanceLanguage + type + key;
       const url = BASE_URL + params;
-      console.log("search url:", url);
 
       const response = await fetch(url);
       const data = await response.json();
-      console.log("search data:", data);
       const searches = data.items?.map((item: any) => item.id.videoId);
 
       setSearchResults(searches);
