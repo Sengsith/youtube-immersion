@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
-    "start": "tsc && node dist/index.ts"
+    "build": "tsc",
+    "start": "node dist/index.ts"
   },
   "dependencies": {
     "cors": "^2.8.5",
