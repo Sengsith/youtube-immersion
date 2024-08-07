@@ -11,7 +11,9 @@
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "mongoose": "^5.13.8"
+    "google-auth-library": "^9.13.0",
+    "mongoose": "^5.13.8",
+    "youtube-caption-extractor": "^1.4.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
