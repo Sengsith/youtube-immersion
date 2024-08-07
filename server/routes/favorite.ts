@@ -33,6 +33,7 @@ router.post("/favorite", async (req, res) => {
       { new: true, upsert: true } // Options
     );
 
+    if (!result) return res.status(500).json({ error: "Could not favorite video" });
     res.json(result.favorites);
   } catch (error) {
     console.error("Error favoriting video from backend:", error);

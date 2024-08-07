@@ -2,6 +2,7 @@
   "name": "youtube-immersion-server",
   "version": "1.0.0",
   "main": "index.ts",
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.ts"
