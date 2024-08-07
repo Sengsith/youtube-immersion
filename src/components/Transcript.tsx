@@ -25,10 +25,7 @@ const Transcript = ({
   const toggleOn = "translate-x-0";
 
   const handleLineClick = (offset: number) => {
-    if (player) {
-      console.log("offset:", offset);
-      player.seekTo(offset, true);
-    }
+    if (player) player.seekTo(offset, true);
   };
 
   const highlightTranscriptLine = () => {
