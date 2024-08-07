@@ -4,7 +4,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 const ThumbnailSkeleton = ({ cards }: { cards: number }) => {
   return Array(cards)
     .fill(0)
-    .map((item, index) => (
+    .map((_, index) => (
       <div key={index} className="flex flex-col gap-4 mb-8">
         <div className="relative pb-[56.25%] w-full">
           <Skeleton className="absolute w-full h-full" />
