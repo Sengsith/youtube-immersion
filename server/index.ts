@@ -6,10 +6,10 @@ import auth from "./routes/auth.ts";
 import transcript from "./routes/transcript.ts";
 import favorite from "./routes/favorite.ts";
 
-dotenv.config({ path: "/.env" });
+dotenv.config({ path: "../.env" });
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 
 // Connect to MongoDB
 const MONGO_URI = process.env.VITE_MONGO_URI;
