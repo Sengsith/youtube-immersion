@@ -2,9 +2,9 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import auth from "./routes/auth";
-import transcript from "./routes/transcript";
-import favorite from "./routes/favorite";
+import auth from "./routes/auth.ts";
+import transcript from "./routes/transcript.ts";
+import favorite from "./routes/favorite.ts";
 
 dotenv.config({ path: "../.env" });
 
