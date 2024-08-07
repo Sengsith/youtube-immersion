@@ -32,13 +32,9 @@ app.use(cors());
 // Middleware to parse JSON
 app.use(express.json());
 
-// Authentication route for google login
+// Routes
 app.use("/api", auth);
-
-// Puppeteer route to scrape transcript
 app.use("/api", transcript);
-
-// Favorite route for storing videoIds into database
 app.use("/api", favorite);
 
 app.listen(port, () => {
