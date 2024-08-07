@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { OAuth2Client } from "google-auth-library";
 import dotenv from "dotenv";
-import UserModel from "../models/UserModel";
+import UserModel from "./models/UserModel";
 
 dotenv.config({ path: "../.env" });
 

@@ -21,6 +21,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["index.ts", "routes/**/*.ts"],
+  "include": ["index.ts", "routes/**/*.ts", "auth.ts", "favorite.ts", "transcript.ts"],
   "exclude": ["node_modules"]
 }

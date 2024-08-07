@@ -2,14 +2,14 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import auth from "./routes/auth";
-import transcript from "./routes/transcript";
-import favorite from "./routes/favorite";
+import auth from "./auth";
+import transcript from "./transcript";
+import favorite from "./favorite";
 
 dotenv.config({ path: "../.env" });
 
 const app = express();
-const port = process.env.PORT || 3001;
+// const port = process.env.PORT || 3001;
 
 // Connect to MongoDB
 const MONGO_URI = process.env.VITE_MONGO_URI;
@@ -37,6 +37,6 @@ app.use("/api", auth);
 app.use("/api", transcript);
 app.use("/api", favorite);
 
-app.listen(port, () => {
-  console.log(`Hello! I am listening on port ${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`Hello! I am listening on port ${port}`);
+// });
