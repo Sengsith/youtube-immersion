@@ -2,14 +2,14 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import auth from "./routes/auth.ts";
-import transcript from "./routes/transcript.ts";
-import favorite from "./routes/favorite.ts";
+import auth from "./routes/auth";
+import transcript from "./routes/transcript";
+import favorite from "./routes/favorite";
 
 dotenv.config({ path: "../.env" });
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3001;
 
 // Connect to MongoDB
 const MONGO_URI = process.env.VITE_MONGO_URI;
