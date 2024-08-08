@@ -37,6 +37,6 @@ app.use("/api", auth);
 app.use("/api", transcript);
 app.use("/api", favorite);
 
-app.listen(port, () => {
-  console.log(`Hello! I am listening on port ${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`Hello! I am listening on port ${port}`);
+// });
