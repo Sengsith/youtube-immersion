@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { YouTubePlayer } from "react-youtube";
-import useFetchTranscript from "../hooks/useFetchTranscript";
+import useGetTranscript from "../hooks/useGetTranscript";
 import { IoCloseCircleSharp } from "react-icons/io5";
 
 const Transcript = ({
@@ -18,7 +18,7 @@ const Transcript = ({
   setShowTranscript: React.Dispatch<React.SetStateAction<boolean>>;
   setShowDetails: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { transcript, loading, error } = useFetchTranscript(videoId);
+  const { transcript, loading } = useGetTranscript(videoId);
 
   // Styling
   const toggleOff = "-translate-x-[100%]";
@@ -83,7 +83,6 @@ const Transcript = ({
         </button>
       </div>
       {loading && <div>Loading...</div>}
-      {error && <div>So sorry, unable to get transcript!</div>}
       {transcript && (
         <div id="lines" className="flex flex-col gap-2 overflow-y-scroll h-full">
           {transcript.map((line, index) => (
