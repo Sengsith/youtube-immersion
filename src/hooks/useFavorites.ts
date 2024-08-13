@@ -1,5 +1,4 @@
 import { User } from "../types/user";
-import axios from "axios";
 
 const useFavorites = (setUser: React.Dispatch<React.SetStateAction<User | null>>) => {
   interface FavoriteDetails {

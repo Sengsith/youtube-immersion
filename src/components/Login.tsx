@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
 import { useGoogleLogin } from "@react-oauth/google";
 import { UserProps } from "../types/userProps";
 import { IconContext } from "react-icons";
@@ -10,31 +9,30 @@ const Login = ({ user, setUser, inHeader = false }: UserProps) => {
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
 
   const handleLogin = useGoogleLogin({
-    flow: "auth-code",
-    onSuccess: async ({ code }) => {
-      if (code) {
-        // Send data to backend
-        try {
-          // Send credential to backend
-          const res = await axios.post("http://localhost:3000/api/login", {
-            code,
-          });
-          setUser(res.data);
-          // Handle the response from the backend
-        } catch (error) {
-          console.error("Error logging in.", error);
-          if (axios.isAxiosError(error)) {
-            console.error("Axios error response:", error.response);
-          }
+    onSuccess: async (response) => {
+      try {
+        const access_token = response.access_token;
+        const userInfoResponse = await fetch("https://www.googleapis.com/oauth2/v2/userinfo", {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        });
+        if (!userInfoResponse.ok) {
+          throw new Error("Failed to fetch user information.");
         }
-      } else {
-        console.error("No credentials returned");
+        const userInfo = await userInfoResponse.json();
+        setUser({
+          given_name: userInfo.given_name,
+          email: userInfo.email,
+          picture: userInfo.picture,
+        });
+      } catch (error) {
+        console.error("Error fetching user info:", error);
       }
     },
-    onError: () => {
-      console.error("Login failed");
+    onError: (error) => {
+      console.error("Login failed:", error);
     },
-    scope: "profile email https://www.googleapis.com/auth/youtube.force-ssl",
   });
 
   const handleLogout = () => {
