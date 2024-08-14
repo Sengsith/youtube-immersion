@@ -1,4 +1,3 @@
-import "./App.css";
 import { RouterProvider } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { SkeletonTheme } from "react-loading-skeleton";

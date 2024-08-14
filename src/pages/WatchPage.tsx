@@ -63,7 +63,7 @@ const WatchPage = () => {
   }, [location.pathname]);
 
   useEffect(() => {
-    if (user && videoId) {
+    if (user && videoId && user.favorites) {
       setIsFavorite(user.favorites.includes(videoId));
     }
   }, [user]);
@@ -105,7 +105,7 @@ const WatchPage = () => {
       alert("Please login to favorite a video!");
       return;
     }
-    handleFavorite({ videoId, email: user.email, isFavorite });
+    handleFavorite({ videoId, isFavorite });
     setIsFavorite(!isFavorite);
   };
 

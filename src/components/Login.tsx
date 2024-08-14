@@ -21,11 +21,19 @@ const Login = ({ user, setUser, inHeader = false }: UserProps) => {
           throw new Error("Failed to fetch user information.");
         }
         const userInfo = await userInfoResponse.json();
-        setUser({
-          given_name: userInfo.given_name,
-          email: userInfo.email,
-          picture: userInfo.picture,
-        });
+
+        // Check first if user object already exists in localStorage
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        } else {
+          setUser({
+            given_name: userInfo.given_name,
+            email: userInfo.email,
+            picture: userInfo.picture,
+            favorites: [],
+          });
+        }
       } catch (error) {
         console.error("Error fetching user info:", error);
       }

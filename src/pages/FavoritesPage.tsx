@@ -41,7 +41,7 @@ const FavoritesPage = () => {
     }
     const videoId = e.currentTarget.id.split("-").pop();
 
-    handleFavorite({ videoId, email: user.email, isFavorite: true });
+    handleFavorite({ videoId, isFavorite: true });
   };
 
   return (
