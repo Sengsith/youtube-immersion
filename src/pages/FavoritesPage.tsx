@@ -24,9 +24,11 @@ const FavoritesPage = () => {
 
   if (!user) {
     return (
-      <div>
-        <div>Please login so that you can add favorites!</div>
-        <Login user={user} setUser={setUser} />
+      <div className="pt-4 px-4 grid place-items-center place-content-center">
+        <div className="text-2xl mb-4">Please login so that you can add favorites!</div>
+        <div className="border border-blue-300 p-4 rounded-xl">
+          <Login user={user} setUser={setUser} />
+        </div>
       </div>
     );
   }
