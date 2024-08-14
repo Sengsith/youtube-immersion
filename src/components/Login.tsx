@@ -41,6 +41,7 @@ const Login = ({ user, setUser, inHeader = false }: UserProps) => {
     onError: (error) => {
       console.error("Login failed:", error);
     },
+    prompt: "select_account",
   });
 
   const handleLogout = () => {
